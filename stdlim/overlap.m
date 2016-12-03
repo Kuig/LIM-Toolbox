@@ -1,8 +1,9 @@
 function output = overlap (frames, frameHop, len, window)
 % output = overlap (frames, frameHop, len, window)
+%   DEPRECATED
 %   This is probably the most bugged piece of software you will find in
 %   this repository
-%
+
 % trasforma una matrice di frames in un vettore lineare
 % ogni colonna è sfalsata di hop elementi (default = framesize/2)
 % len indica la lunghezza finale dell'output (facoltativo)
