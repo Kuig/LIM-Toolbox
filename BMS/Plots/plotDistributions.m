@@ -1,8 +1,9 @@
 function [ hbs,hd,hf,ht ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma )
-%[ hs,hd,h2,h1 ] = plotDistributions( X1, X2, F, T )
+%[ hs,hd,h2,h1 ] = plotDistributions( X1, X2, F, T, res )
 %   Plots Bivariate Spectrum and distributions
 %   X1,X2 = spectra of signals to compare
 %   F,T = Frequency and time axes
+%   res = angle distribution resolution
 %   returns figures' handles
 %[ hs,hd,h2,h1 ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma )
 %   Plots Bivariate Spectrum and distributions (use with precomputed data)
@@ -10,14 +11,14 @@ function [ hbs,hd,hf,ht ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma
 %   D,Df,Dt = Principal Spectral Content distributions from PSCDist()
 %   F,T,a = Frequency, time and angle axes
 %   logFreq = if 1, plots logarithmic frequency axes (def. 1)
-%   gamma = render gamma. If > 1 darkens image, if < 1 brightens (def. 1)
+%   gamma = render gamma. If < 1 darkens image, if > 1 brightens (def. 0.4)
 
     if nargin < 10, logFreq = 1; end;
-    if nargin < 11, gamma = 1; end;
-    if nargin < 5
-        X1 = X; X2 = s; F = C; T = D;
+    if nargin < 11, gamma = 0.4; end;
+    if nargin < 6
+        X1 = X; X2 = s; F = C; T = D; res = Dt;
         [X,s,C]=BS(X1,X2);
-        [D,Df,Dt,a] = PSCDist(X,s,C);
+        [D,Df,Dt,a] = PSCDist(X,s,C,res);
     end;
     
     if logFreq, yl = [35,130]; else yl = [F(1),F(end)]; end;
@@ -52,7 +53,7 @@ function [ hbs,hd,hf,ht ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma
         ylim(yl);
         set(gca,'xtick',xtk);
         set(gca,'xticklabel',xlb);
-        
+        colormap(1-gray);
         axis xy, grid on;
 
     ht = subplot(3,3,[8,9]);
@@ -60,5 +61,6 @@ function [ hbs,hd,hf,ht ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma
         axis xy, grid on;
         set(gca,'ytick',xtk);
         set(gca,'yticklabel',xlb);
+        colormap(1-gray);
 end
 

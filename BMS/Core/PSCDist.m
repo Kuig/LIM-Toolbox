@@ -8,9 +8,9 @@ function [D, Df, Dt, alpha ] = PSCDist (X, s, C, res)
 %   D(:,3) = overall angles distribution (|X|*|C| weight)
 %   Df = Distribution over frequency and angle
 %   Dt = Distribution over time and angle
-%   alpha = angle axes
+%   alpha = angle axes (def. 101)
 
-    if nargin < 4, res = 201; end;
+    if nargin < 4, res = 101; end;
     
     aM = abs(X);
     aC = abs(C);

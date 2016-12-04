@@ -1,19 +1,24 @@
 function [ IR ] = getIR( r, xScale, yScale, mType, aType, centerValue, s, K )
+%   DEPRECATED, this function will change syntax in the future
+%
 %[ IR ] = getIR( r, ___ )
 %   Returns a complex kernel of size r-by-r of specified type
 %   Typical use: getIR(r,1,1,'gauss','out',0,K);
 %   With K = 0.02 for r = 6 or K = 0.005 for r = 12
+%
 %[ IR ] = getIR( r, xScale, yScale, mType, aType, centerValue )
 %   mType: DIST HANN GAUSS RECT DoG
 %   aType: IN OUT CW CCW
 %       s: mag power
+%
 %[ IR ] = getIR( r, xScale, yScale, 'DoG', aType, centerValue, s, K )
 %   s: sigma of first gaussian
 %   K: ratio of second gaussian
+%
 %[ IR ] = getIR( type )
 %   type: SOBEL GRADIENT
 %
-%Use [] to skip 'centerValue'
+% Use [] to skip 'centerValue'
 
     if ~ischar(r)
         if nargin < 3

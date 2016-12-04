@@ -10,7 +10,7 @@ function [ X ] = getTD( X, hop, len, w )
 %   if BUFFER is called without initial delay or if getSTFT is replaced
 %   with SPECTROGRAM, OVERLAP function in stdlim will not work properly
 
-    X = overlap(X,hop,len,w.^2); % Why is this squared?
+    X = overlap(X,hop,len,w.^2); % w.^2 -> frame masked twice
 
 end
 

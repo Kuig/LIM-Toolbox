@@ -9,9 +9,9 @@ function [ IMG ] = stft2img( STFT, dbLow, dbHigh )
 %   Both are expressed in dBfs.
 
     if nargin < 2
-        IMG = amp2db(abs(STFT),dbLow);
-    else
         [IMG,dbLow] = amp2db(abs(STFT));
+    else
+        IMG = amp2db(abs(STFT),dbLow);
     end;
     IMG = IMG-dbLow;
     if nargin < 3, dbHigh = max(IMG(:)); end;

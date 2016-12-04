@@ -1,0 +1,40 @@
+
+% Load or generate audio sample
+% [x, Fs] = audioread('SillySample.wav');
+Fs = 44100; dur = 8; len = dur*Fs;
+x = getSampleAudio(dur,Fs);
+
+% Listen to sample
+% sound(x,Fs);
+
+% Get STFT
+w = hann(2048); hop = 512;
+[L, F, T] = getFD(x(:,1),Fs,hop,w);
+[R, ~, ~] = getFD(x(:,2),Fs,hop,w);
+
+% Resamples input mixture at different angles
+% (creates a rotating effect!)
+a = linspace(-pi,pi,numel(T));
+newL = BMS(L, R, a );
+newR = BMS(L, R, a + pi/4 );
+
+% Back to time domain
+y(:,1) = getTD(newL, hop, leng, w);
+y(:,2) = getTD(newR, hop, leng, w);
+
+% Listen to result
+sound(y,Fs);
+
+% Plot input and output Bivariate Spectra
+subplot(2,1,1)
+    [X,s,C] = BS(L,R);
+    plotBS(X,s,C,F,T);
+    grid on, ylim([40,128]);
+    title('Input');
+    
+subplot(2,1,2)
+    [X,s,C] = BS(newL,newR);
+    plotBS(X,s,C,F,T);
+    grid on, ylim([40,128]);
+    title('Output');
+    
