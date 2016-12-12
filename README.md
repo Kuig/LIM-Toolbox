@@ -3,6 +3,10 @@
 This project is currently not ready for distribution, nevertheless who am I to keep you from downloading and trying it?
 I hope to complete the reference manual very soon.
 
+## Requirements
+
+Matlab 2015a + DSP Toolbox
+
 ## Folders content
 
 ### stdlim
