@@ -5,18 +5,26 @@ I hope to complete the reference manual very soon.
 
 ## Requirements
 
-Matlab 2015a + DSP Toolbox
+It has been tested on Matlab R2015a + DSP Toolbox, but it should work even with older versions of Matlab. I it doesn't, please let me know.
 
 ## Folders content
 
 ### stdlim
 
-stdlim contains common audio processing functions
+`stdlim` contains common audio processing functions.
 
 ### BMS
 
-This folder contains Bivariate Mixture Space functions and examples
+`BMS` folder contains Bivariate Mixture Space functions and examples.
 
 ### LSF
 
-This folder contains Linear Structure Field and Spectro-Temporal Structure Field functions and examples
+`LSF` folder contains Linear Structure Field and Spectro-Temporal Structure Field functions and examples.
+
+## How to reference this work
+
+Well, by now the only publication available is the following:
+
+> Visualization and manipulation of stereophonic audio signals by means of IID and IPD / G. Presti, G. Haus, D.A. Mauro - In: ICMC|SMC|2014, 14-20 September 2014, Athens, Greece - The National and Kapodistrian Unversity of Athens, 2014 Sep. - ISBN 978-960-466-137-4. - pp. 1497-1502
+
+But many other works are being published, please stand by...
