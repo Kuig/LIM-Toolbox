@@ -26,7 +26,13 @@ function [ h, edges ] = histw( x, w, bin, dim, func )
         bin = size(edges,1)-1;
     end;
 
-    id = discretize(x, edges);
+    if exist('discretize') == 2;
+        id = discretize(x, edges);         % Introduced in Matlab R2015a
+    elseif exist('histcounts') == 2;
+        [~, ~, id] = histcounts(x, edges); % Introduced in Matlab R2014b
+    else
+        [~, id] = histc(x, edges);         % DEPRECATED
+    end;
 
     mid = min(id(:));
     mad = max(id(:));
