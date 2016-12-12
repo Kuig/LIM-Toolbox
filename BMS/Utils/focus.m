@@ -3,7 +3,7 @@ function [ M ] = focus( L, R, p, H, c )
 %   Resample and mask around p
 %   (use plotDMask() as a tool to choose p, H and c)
 %   L, R = STFT of input channels
-%   p = stereophonic position to sample (uses s+pi/2 if empty)
+%   p = stereophonic position to sample
 %   H = upper and lower range (uses [H,H] if scalar, ignored if p=[])
 %   c = correlation selection coefficient (clarity)
 %       c=0: ignore; c>0 = select correlated; c<0: select uncorrelated
@@ -17,20 +17,7 @@ function [ M ] = focus( L, R, p, H, c )
     
     s = SAngle(L,R);
     
-    if isempty(p),
-        p = s+pi/2;
-        mask = 1;
-    else
-        p   = mod((p)+pi/2,pi)-pi/2;
-        low = mod((p-H(1))+pi/2,pi)-pi/2;
-        hig = mod((p+H(2))+pi/2,pi)-pi/2;
-
-        if low > hig
-            mask = (s > low) | (s < hig);
-        else
-            mask = (s > low) & (s < hig);
-        end;
-    end;
+    mask = getSMask( s, p, H );
     
     if c ~= 0
         C = abs(CCorr(L,R)).^abs(c);

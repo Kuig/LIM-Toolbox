@@ -36,8 +36,8 @@ newL = L .* mask;
 newR = R .* mask;
 
 % Back to time domain
-y(:,1) = getTD(newL, hop, leng, w);
-y(:,2) = getTD(newR, hop, leng, w);
+y(:,1) = getTD(newL, hop, len, w);
+y(:,2) = getTD(newR, hop, len, w);
 
 % Listen to result
 sound(y,Fs);

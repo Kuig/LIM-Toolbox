@@ -10,14 +10,7 @@ function [ S ] = ADRess( L, R, p, H )
 
     [M, s, ~] = BS(L,R);
     
-    low = mod((p-H)+pi/2,pi)-pi/2;
-    hig = mod((p+H)+pi/2,pi)-pi/2;
-    
-    if low > hig
-        mask = (s > low) | (s < hig);
-    else
-        mask = (s > low) & (s < hig);
-    end;
+    mask = getSMask( s, p, H );
 
     if (p > -pi/4) && (p < pi/4)
         phase = angle(L);
