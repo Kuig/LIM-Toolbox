@@ -1,11 +1,11 @@
 # LIM-Toolbox (beta)
 
-This project is currently not ready for distribution, nevertheless who am I to keep you from downloading and trying it?
+`LIM-Toolbox` is a collection of basic Matlab functions used in sound and music computing research. This also includes some tools developed at the *Laboratorio di Informatica Musicale* (University of Milan, Computer Science department) concerning bivariate signal analisys and other signal processing techniques. The project is currently not ready for distribution, nevertheless who am I to keep you from downloading and trying it?
 I hope to complete the reference manual very soon.
 
 ## Requirements
 
-It has been tested on Matlab R2015a + DSP Toolbox, but it should work even with older versions of Matlab. I it doesn't, please let me know.
+It has been tested on Matlab R2015a + DSP Toolbox, but it should work even with older versions of Matlab. If it doesn't, please let me know.
 
 ## Folders content
 
