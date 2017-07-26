@@ -4,6 +4,9 @@ function [ Y, lN ] = linspec2log( X, F, method, res, Nmin, Nmax)
 %[ Y, lN ] = linspec2log( X, F, method, res )
 %[ Y, lN ] = linspec2log( X, F, method, res, Nmin )
 %[ Y, lN ] = linspec2log( X, F, method, res, Nmin, Nmax)
+%
+%   DEPRECATED
+%
 %   X is the array or m-by-p matrix of the spectrum
 %   F is the frequency column array of lenght m
 %   method is the interpolation mentod, default is 'pchip'
@@ -14,13 +17,15 @@ function [ Y, lN ] = linspec2log( X, F, method, res, Nmin, Nmax)
 %[ Y, N ] = linspec2log( X, [], 'map', I, L, H )
 %   Uses matrix method and returns matrix N such that X = N*Y
 
-    if nargin < 3, method = 'pchip'; end;
+    if nargin < 3, method = 'pchip'; end
 
+    warning('linspec2log is deprecated and will be removed');
+    
     switch method
         case 'map'
-            if nargin < 6, Nmax = size(X,1); end;
-            if nargin < 5, Nmin = 3; end;
-            if nargin < 4, res = Nmax; end;
+            if nargin < 6, Nmax = size(X,1); end
+            if nargin < 5, Nmin = 3; end
+            if nargin < 4, res = Nmax; end
             [M,lN] = logfmap(res,Nmin,Nmax);
             Y = M*X; % X = lN*Y
         otherwise
@@ -28,11 +33,11 @@ function [ Y, lN ] = linspec2log( X, F, method, res, Nmin, Nmax)
                 warning ('Found F <= 0 during log.freq. conversion!');
                 F = F(2:end);
                 X = X(2:end,:,:);
-            end;
+            end
             N = linf2logf(F);
-            if nargin < 4, res = size(F,1); end;
-            if nargin < 5, Nmin = min(N(isfinite(N))); end;
-            if nargin < 6, Nmax = max(N(isfinite(N))); end;
+            if nargin < 4, res = size(F,1); end
+            if nargin < 5, Nmin = min(N(isfinite(N))); end
+            if nargin < 6, Nmax = max(N(isfinite(N))); end
             lN = linspace(Nmin,Nmax,res).';
             Y = interp1(N,X,lN,method);
     end

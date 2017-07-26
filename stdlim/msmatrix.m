@@ -7,7 +7,7 @@ function [ C, D ] = msmatrix( A, B )
     
     sqrt2 = sqrt(2);
     if nargin < 2
-        if size(A,2) ~= 2, error('Input matrix must have 2 columns'); end;
+        if size(A,2) ~= 2, error('Input matrix must have 2 columns'); end
         C(:,1) = sum(A,2)/sqrt2;
         C(:,2) = diff(A,[],2)/sqrt2;
     else

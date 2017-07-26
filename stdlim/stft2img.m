@@ -12,9 +12,9 @@ function [ IMG ] = stft2img( STFT, dbLow, dbHigh )
         [IMG,dbLow] = amp2db(abs(STFT));
     else
         IMG = amp2db(abs(STFT),dbLow);
-    end;
+    end
     IMG = IMG-dbLow;
-    if nargin < 3, dbHigh = max(IMG(:)); end;
+    if nargin < 3, dbHigh = max(IMG(:)); end
     IMG = IMG / dbHigh;
 
 end
