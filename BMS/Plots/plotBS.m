@@ -13,10 +13,10 @@ function IMG = plotBS( M, s, C, F, T, dbFloor, clarityExponent, logFreq, gamma)
 %   logFreq = if 1 uses log frequency axis (def. 1)
 %   gamma = render gamma. If > 1 darkens image, if < 1 brightens (def. 1)
 
-        if nargin < 6, dbFloor = -96; end;
-        if nargin < 7, clarityExponent = 1; end;
-        if nargin < 8, logFreq = 1; end;
-        if nargin < 9, gamma = 1; end;
+        if nargin < 6, dbFloor = -96; end
+        if nargin < 7, clarityExponent = 1; end
+        if nargin < 8, logFreq = 1; end
+        if nargin < 9, gamma = 1; end
         
         H = mod((s+pi/2)/pi-0.25,1);
         S = abs(C).^clarityExponent;
@@ -27,12 +27,12 @@ function IMG = plotBS( M, s, C, F, T, dbFloor, clarityExponent, logFreq, gamma)
         if logFreq
             [IMG,F] = linspec2log(IMG(2:end,:,:),F(2:end));
             IMG = max(IMG,0);
-        end;
+        end
 
-        if nargout < 1;
+        if nargout < 1
             image(T,F,IMG.^gamma);
             axis xy;
-        end;
+        end
 
 end
 

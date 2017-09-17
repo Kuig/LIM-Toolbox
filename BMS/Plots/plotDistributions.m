@@ -13,15 +13,15 @@ function [ hbs,hd,hf,ht ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma
 %   logFreq = if 1, plots logarithmic frequency axes (def. 1)
 %   gamma = render gamma. If < 1 darkens image, if > 1 brightens (def. 0.4)
 
-    if nargin < 10, logFreq = 1; end;
-    if nargin < 11, gamma = 0.4; end;
+    if nargin < 10, logFreq = 1; end
+    if nargin < 11, gamma = 0.4; end
     if nargin < 6
         X1 = X; X2 = s; F = C; T = D; res = Dt;
         [X,s,C]=BS(X1,X2);
         [D,Df,Dt,a] = PSCDist(X,s,C,res);
-    end;
+    end
     
-    if logFreq, yl = [35,130]; else yl = [F(1),F(end)]; end;
+    if logFreq, yl = [35,130]; else yl = [F(1),F(end)]; end
 
     hbs = subplot(3,3,[2,3,5,6]);
         plotBS(X,s,C,F,T);
@@ -43,11 +43,11 @@ function [ hbs,hd,hf,ht ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma
         grid on, xlim([-pi/2,pi/2]);
    
     hf = subplot(3,3,[1,4]);
-        if logFreq,
+        if logFreq
             [Df,N] = linspec2log(Df(2:end,:,:),F(2:end));
         else
             N = F;
-        end;
+        end
         Df = max(Df,0);
         imagesc(a+pi/4,N,Df.^gamma);
         ylim(yl);
