@@ -5,7 +5,7 @@ function [ X,F,T,x ] = getFD( x, Fs, hop, w )
 %   returns the STFT of x with all the postprocessing involved. Output x is
 %   the buffered version of X.
 
-    if nargin < 3,
+    if nargin < 3
         x = x(:);
         wsize = size(x,1);
         F = linspace(0,Fs/2,1+wsize/2)';
@@ -20,7 +20,7 @@ function [ X,F,T,x ] = getFD( x, Fs, hop, w )
         x = buffer(x,wsize,olap);
         x = bsxfun(@times,x,w);
         [X, F, T] = getSTFT(x,olap,Fs);    
-    end;
+    end
 
 end
 
