@@ -10,7 +10,7 @@ function [D, Df, Dt, alpha ] = PSCDist (X, s, C, res)
 %   Dt = Distribution over time and angle
 %   alpha = angle axes (def. 101)
 
-    if nargin < 4, res = 101; end;
+    if nargin < 4, res = 101; end
     
     aM = abs(X);
     aC = abs(C);

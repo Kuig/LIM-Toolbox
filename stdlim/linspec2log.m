@@ -14,7 +14,9 @@ function [ Y, lN ] = linspec2log( X, F, method, res, Nmin, Nmax)
 %   Nmin is the first note number of the output array, default to min(F)
 %   Nmax is the first note number of the output array, default to max(F)
 %   lN output is the new frequency axis expressed in note numbers (440->69)
+%
 %[ Y, N ] = linspec2log( X, [], 'map', I, L, H )
+%
 %   Uses matrix method and returns matrix N such that X = N*Y
 
     if nargin < 3, method = 'pchip'; end

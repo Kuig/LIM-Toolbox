@@ -4,9 +4,9 @@ function [ X ] = BMS( X1,X2,alpha )
 %   X1 and X2 can be vectors or matrixes, alpha is in the format
 %   alpha(f,t,az) (not all dimensions are required)
 
-    if nargin < 3,
+    if nargin < 3
         error('Please provide alpha');
-    end;
+    end
 
     [X1, X2, alpha, a_case] = validateInput(X1,X2,alpha);
     
@@ -17,53 +17,53 @@ function [ X ] = BMS( X1,X2,alpha )
             X = X1 .* cos(alpha) + X2 .* sin(alpha);
         otherwise
             error('How did you get here?!');
-    end;
+    end
 
 end
 
 function [X1, X2, alpha, a_case] = validateInput(X1,X2,alpha)
-    if any (size(X1) ~= size(X2)),
+    if any (size(X1) ~= size(X2))
         error('X1 and X2 must be of same size');
-    end;
+    end
     
-    if ~ismatrix(X1),
+    if ~ismatrix(X1)
         error('X1 and X2 must be vectors or matrixes');
-    end;
+    end
     
-    if isrow(X1),
+    if isrow(X1)
         X1 = X1(:);
         X2 = X2(:);
-    end;
+    end
 
     if isscalar(alpha)
         alpha = ones(size(X1,1),1) * alpha;
-    end;
+    end
     
-    if iscolumn(alpha),
-        if size(X1,1) ~= size(alpha,1),
+    if iscolumn(alpha)
+        if size(X1,1) ~= size(alpha,1)
             error('X1, X2 and alpha must have same rows for rows mode');
-        end;
+        end
         a_case = 'col';
-    end;
+    end
 
-    if isrow(alpha),
-        if size(X1,2) ~= size(alpha,2),
+    if isrow(alpha)
+        if size(X1,2) ~= size(alpha,2)
             error('X1, X2 and alpha must have same columns for columns mode');
-        end;
+        end
         a_case = 'row';
-    end;
+    end
 
-    if ~isvector(alpha),
+    if ~isvector(alpha)
         if ismatrix(alpha)
-            if any(size(X1) ~= size(alpha)),
+            if any(size(X1) ~= size(alpha))
                 error('X1, X2 and alpha must be the same size for matrix mode');
-            end;
+            end
             a_case = 'mat';
         else
-            if (size(X1,1) ~= size(alpha,1) || size(X1,2) ~= size(alpha,2)),
+            if (size(X1,1) ~= size(alpha,1) || size(X1,2) ~= size(alpha,2))
                 error('X1, X2 and alpha(:,:,1) must be the same size for volume mode');
-            end;
+            end
             a_case = 'vol';
-        end;
-    end;   
+        end
+    end
 end

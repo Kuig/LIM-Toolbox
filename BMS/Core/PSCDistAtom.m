@@ -9,8 +9,8 @@ function [ D, dist, alpha ] = PSCDistAtom( s, W, dir, res )
 %   dist = distribution over time or frequency
 %   alpha = angle axes
 
-    if nargin < 4, res = 201; end;
-    if nargin < 3, dir = 2; end;
+    if nargin < 4, res = 201; end
+    if nargin < 3, dir = 2; end
     alpha = linspace(-pi/2,pi/2,res);
     dist = histw(s, W, alpha, dir);
     D = sum(dist,3-dir).';

@@ -6,33 +6,33 @@ function [ h, edges ] = histw( x, w, bin, dim, func )
 %   func is tipically @sum, but it can be also @max or other stats function
 %   all input arguments are defaulted to behave like a common histogram
 
-    if ~ismatrix(x), error('Histw can only handle n-by-m matrix'); end;
-    if any(size(x) ~= size(w)), error('x and w must be of the same size'); end;
+    if ~ismatrix(x), error('Histw can only handle n-by-m matrix'); end
+    if any(size(x) ~= size(w)), error('x and w must be of the same size'); end
     % I think ther's some error here:
-    if (iscolumn(x) && dim == 2) || (isrow(x) && dim == 1), 
+    if (iscolumn(x) && dim == 2) || (isrow(x) && dim == 1)
         warning('Dim argument ignored...');  
         dim = 3-dim; 
-    end;
+    end
     
-    if nargin < 5, func = @(X,dim) sum(X,dim,'omitnan'); end;
-    if nargin < 4, dim = 2; end;
-    if nargin < 3, bin = 10; end;
-    if nargin < 2, w = ones(size(x)); end;
+    if nargin < 5, func = @(X,dim) sum(X,dim,'omitnan'); end
+    if nargin < 4, dim = 2; end
+    if nargin < 3, bin = 10; end
+    if nargin < 2, w = ones(size(x)); end
     
     if isscalar(bin)
         edges = binpicker(min(x(:)),max(x(:)),bin,range(x(:))/bin);
     else
         edges = bin(:);
         bin = size(edges,1)-1;
-    end;
+    end
 
-    if exist('discretize') == 2;
+    if exist('discretize') == 2
         id = discretize(x, edges);         % Introduced in Matlab R2015a
-    elseif exist('histcounts') == 2;
+    elseif exist('histcounts') == 2
         [~, ~, id] = histcounts(x, edges); % Introduced in Matlab R2014b
     else
         [~, id] = histc(x, edges);         % DEPRECATED
-    end;
+    end
 
     mid = min(id(:));
     mad = max(id(:));
@@ -40,11 +40,11 @@ function [ h, edges ] = histw( x, w, bin, dim, func )
     
     for b = mid:mad           %% THIS S**T IS SLOW
         msk = id==b;
-        tw = w.*msk;    
+        tw  = w.*msk;    
         h(b,:) = func(tw,dim);
-    end;
+    end
     
-    if dim == 2, h = h'; end;
+    if dim == 2, h = h'; end
 
 end
 

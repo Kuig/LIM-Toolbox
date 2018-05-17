@@ -7,7 +7,7 @@ function [ out ] = getSampleAudio( dur, Fs )
 %   (this function will change in the future)
 
     % Setup
-    len = dur * Fs;
+    len = ceil(dur * Fs);
     T = linspace(0,dur,len);
     baseNote = 50 + round(rand+40);
     
