@@ -33,9 +33,9 @@ function [STFT, F, T] = getSTFT(buffered,overlap,Fs)
     windowSize = size(buffered,1);
     nFrames = size(buffered,2);
     frameHop = windowSize-overlap;
-    lastFrameIndex = (nFrames * frameHop) - overlap - 1;
+    lastFrameIndex = (nFrames * frameHop) - windowSize;
 
-    T = ((-overlap : frameHop : lastFrameIndex) + 1) / Fs;
+    T = (-overlap : frameHop : lastFrameIndex) / Fs;
     F = linspace(0,Fs/2,1+windowSize/2)';
     
     STFT = fft(buffered);
