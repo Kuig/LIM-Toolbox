@@ -14,7 +14,7 @@ function [ h, edges ] = histw( x, w, bin, dim, func )
         dim = 3-dim; 
     end
     
-    if nargin < 5, func = @(X,dim) sum(X,dim,'omitnan'); end
+    if nargin < 5, func = @(X,di) sum(X,di,'omitnan'); end
     if nargin < 4, dim = 2; end
     if nargin < 3, bin = 10; end
     if nargin < 2, w = ones(size(x)); end
