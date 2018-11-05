@@ -32,6 +32,7 @@ But many other works are being published, please stand by...
 ## License
 
 LIM-toolbox: basic MATLAB functions used in SMC research
+
 Copyright (C) 2018 - Laboratorio di Informatica Musicale
 
 This program is free software: you can redistribute it and/or modify
