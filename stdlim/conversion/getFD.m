@@ -1,9 +1,21 @@
-function [ X,F,T,x ] = getFD( x, Fs, hop, w )
-%[ X, F, T ] = getFD( x, Fs )
+function [ X, F, T, x ] = getFD( x, Fs, hop, w )
+%GETFD Given a signal in time domain returns the frequency domain
+%
+%[ X, F, T ] = GETFD( x )
+%[ X, F, T ] = GETFD( x, Fs )
+%
 %   returns FFT(x(:)) with all the postprocessing involved
-%[ X, F, T, x ] = getFD( x, Fs, hop, w )
+%   if not specified Fs = 1;
+%
+%[ X, F, T, x ] = GETFD( x, Fs, hop, w )
+%
 %   returns the STFT of x with all the postprocessing involved. Output x is
 %   the buffered version of X.
+%
+%(C)2014 G.Presti (LIM) - GPL license at the end of file
+% See also GETTD, GETFREQCONVERTERS, RESCALEFREQ, GETFBANK, BUFFER
+
+    if nargin < 2, Fs = 1; end
 
     if nargin < 3
         x = x(:);
@@ -44,3 +56,23 @@ function [STFT, F, T] = getSTFT(buffered,overlap,Fs)
     STFT(2:end-1,:) = STFT(2:end-1,:) * 2; 
         
 end
+
+% ------------------------------------------------------------------------
+%
+% getFD.m: Given a signal in time domain returns the frequency domain
+% Copyright (C) 2014 - Giorgio Presti - Laboratorio di Informatica Musicale
+% 
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>
+%
+% ------------------------------------------------------------------------

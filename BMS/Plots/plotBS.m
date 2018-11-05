@@ -20,12 +20,12 @@ function IMG = plotBS( M, s, C, F, T, dbFloor, clarityExponent, logFreq, gamma)
         
         H = mod((s+pi/2)/pi-0.25,1);
         S = abs(C).^clarityExponent;
-        V = stft2img( M, dbFloor );
+        V = rescaleamp( M, dbFloor );
         IMG = cat(3, H,S,V);
         IMG = hsv2rgb(IMG);
         
         if logFreq
-            [IMG,F] = linspec2log(IMG(2:end,:,:),F(2:end));
+            [IMG,F] = rescalefreq(IMG,F,'st','int');
             IMG = max(IMG,0);
         end
 

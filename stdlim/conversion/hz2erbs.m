@@ -1,36 +1,27 @@
-function [ Y ] = panpot( X, a )
-%PANPOT distributes a signal over 2 channels
+function [ n ] = hz2erbs( f )
+%HZ2ERBS return number of ERB below given frequency
 %
-%[ Y ] = PANPOT( X, a )
+%[ n ] = HZ2ERBS( f )
 %
-%   If X is a vector: returns a n-by-2 matrix with a panned version of X
-%   If X is a n-by-2 matrix, rotates X rotated by a given angle
-%   
-%   a: panning or rotation angle
-%      a = 0     -> left
-%      a = pi/2  -> right
-%      a = pi/4  -> mid
-%      a = -pi/4 -> side
+%   ERBS returns the number of equivalent rectangular bandwidths below the
+%   given frequency f.
+%
+%   Reference: Moore, Brian CJ, and Brian R. Glasberg. "Suggested formulae 
+%              for calculating auditory?filter bandwidths and excitation
+%              patterns." The journal of the acoustical society of
+%              America 74.3 (1983): 750-753.
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
-% See also ANG2MAT, FADE, MSMATRIX
+% See also ERBS2HZ, ERB2HZ, HZ2ERB, GETFREQCONVERTERS, RESCALEFREQ
 
-    ch = size(X,2);
-    switch ch
-        case 1
-        case 2
-            a = [a, a+pi/2];
-        otherwise
-            error('This version only supports n-by-2 signals');
-    end
-    
-    Y = (ang2mat(a) * X.').';
-    
+%   n = 21.4 * log10(1+0.00437*f);                      % From linear approx
+    n = 11.17268 * log(1+((46.06538*f)./(f+14678.49))); % From polynomial approx
+
 end
 
 % ------------------------------------------------------------------------
 %
-% panpot.m: distributes a signal over 2 channels
+% hz2erbs.m: number of ERB below given frequency
 % Copyright (C) 2018 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

@@ -1,33 +1,35 @@
-function wavwrite( y, Fs, N, filename )
-%WAVWRITE (backward compatibility for wavwrite)
+function [ N ] = hz2st( F, Fref, Nref, EDO )
+%HZ2ST convert Hz to note numbers
 %
-% WAVWRITE(y,'filename')
-% WAVWRITE(y,Fs,'filename')
-% WAVWRITE(y,Fs,N,'filename')
+%[ N ] = HZ2ST( F )
+%[ N ] = HZ2ST( F, Fref )
+%[ N ] = HZ2ST( F, Fref, Nref )
+%[ N ] = HZ2ST( F, Fref, Nref, EDO )
 %
-%	audiowrite wrapper for wavwrite backward compatibility
+%   Convert frequency values F to note number N based on:
+%   Fref: reference frequency (default: 440)
+%   Nref: N value corresponding to Fref (default: 69)
+%   EDO:  Equal division of the octave (default: 12)
+%
+%   Note that [ N ] = HZ2ST( F, Fref, 0 ); returns the difference in
+%   semitones between F and Fref.
 %
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
-% See also WAVREAD, AUDIOWRITE, AUDIOREAD
+% See also ST2HZ, GETFREQCONVERTERS, RESCALEFREQ, AMP2DB, DB2AMP
 
-	switch nargin
-		case 2
-			filename = Fs;
-			Fs = 8000;
-			N = 16;
-		case 3
-			filename = N;
-			N = 16;
-        otherwise
-	end
+    if nargin < 4, EDO = 12; end
+    if nargin < 3, Nref = 69; end
+    if nargin < 2, Fref = 440; end
 
-	audiowrite(filename,y,Fs,'BitsPerSample',N);
+    if any(F<0), warning ('Found F < 0 during log.freq. conversion!'); end
+
+    N = EDO * log2(F./Fref) + Nref;
 
 end
 
 % ------------------------------------------------------------------------
 %
-% wavwrite.m: backward compatibility for wavwrite
+% hz2st.m: convert Hz to note numbers
 % Copyright (C) 2014 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

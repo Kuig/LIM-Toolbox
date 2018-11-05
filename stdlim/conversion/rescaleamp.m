@@ -1,33 +1,37 @@
-function wavwrite( y, Fs, N, filename )
-%WAVWRITE (backward compatibility for wavwrite)
+function [ IMG ] = rescaleamp( STFT, dbLow, dbHigh )
+%RESCALEAMP rescale values to dB, then takes result into range 0-1
 %
-% WAVWRITE(y,'filename')
-% WAVWRITE(y,Fs,'filename')
-% WAVWRITE(y,Fs,N,'filename')
+%[ IMG ] = RESCALEAMP( STFT )
+%[ IMG ] = RESCALEAMP( STFT, dbLow )
+%[ IMG ] = RESCALEAMP( STFT, dbLow, dbHigh )
 %
-%	audiowrite wrapper for wavwrite backward compatibility
+%   Takes the STFT output of a spectrogram function and returns a matrix of
+%   the same size in the range 0-1, where 0 is the lowest level and 1 is
+%   the highest. Levels have a logarithmic scale.
+%   dbLow sets the level corresponding to 0, dbHigh sets the level 1.
+%   Both are expressed in dBfs.
 %
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
-% See also WAVREAD, AUDIOWRITE, AUDIOREAD
+% See also RESCALEFREQ, AMP2DB, DB2AMP, IMAGE
 
-	switch nargin
-		case 2
-			filename = Fs;
-			Fs = 8000;
-			N = 16;
-		case 3
-			filename = N;
-			N = 16;
-        otherwise
-	end
-
-	audiowrite(filename,y,Fs,'BitsPerSample',N);
+    if nargin < 2
+        [IMG,dbLow] = amp2db(abs(STFT));
+    else
+        IMG = amp2db(abs(STFT),dbLow);
+    end
+    IMG = IMG-dbLow;
+    if nargin < 3
+        dbHigh = max(IMG(:)); 
+    else
+        IMG = min(IMG,(dbHigh-dbLow));
+    end
+    IMG = IMG / dbHigh;
 
 end
 
 % ------------------------------------------------------------------------
 %
-% wavwrite.m: backward compatibility for wavwrite
+% rescaleamp.m: rescale values to dB, then takes result into range 0-1
 % Copyright (C) 2014 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

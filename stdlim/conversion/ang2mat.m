@@ -1,36 +1,25 @@
-function [ Y ] = panpot( X, a )
-%PANPOT distributes a signal over 2 channels
+function [ A ] = ang2mat( angles, doFix )
+%ANG2MAT Convert given angles (in radians) to a rotation matrix
 %
-%[ Y ] = PANPOT( X, a )
-%
-%   If X is a vector: returns a n-by-2 matrix with a panned version of X
-%   If X is a n-by-2 matrix, rotates X rotated by a given angle
-%   
-%   a: panning or rotation angle
-%      a = 0     -> left
-%      a = pi/2  -> right
-%      a = pi/4  -> mid
-%      a = -pi/4 -> side
+%[ A ] = ang2mat( angles, doFix )
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
-% See also ANG2MAT, FADE, MSMATRIX
+% See also PANPOT, MSMATRIX, FIXANGLES
 
-    ch = size(X,2);
-    switch ch
-        case 1
-        case 2
-            a = [a, a+pi/2];
-        otherwise
-            error('This version only supports n-by-2 signals');
-    end
+    if nargin < 2, doFix = 0; end
+
+    angles = angles(:).';
     
-    Y = (ang2mat(a) * X.').';
-    
+     A = [cos(angles);...
+          sin(angles)];
+
+    if doFix, A = fixangles(A); end
+  
 end
 
 % ------------------------------------------------------------------------
 %
-% panpot.m: distributes a signal over 2 channels
+% ang2mat.m: Convert given angles in rad to rotation matrix
 % Copyright (C) 2018 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

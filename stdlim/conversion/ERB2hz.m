@@ -1,36 +1,24 @@
-function [ Y ] = panpot( X, a )
-%PANPOT distributes a signal over 2 channels
+function [ f ] = ERB2hz( bw )
+%ERB2HZ given the ERB bandwidth return corresponding frequency 
 %
-%[ Y ] = PANPOT( X, a )
+%[ f ] = ERB2hz( bw )
 %
-%   If X is a vector: returns a n-by-2 matrix with a panned version of X
-%   If X is a n-by-2 matrix, rotates X rotated by a given angle
-%   
-%   a: panning or rotation angle
-%      a = 0     -> left
-%      a = pi/2  -> right
-%      a = pi/4  -> mid
-%      a = -pi/4 -> side
+%   Reference: Moore, Brian CJ, and Brian R. Glasberg. "Suggested formulae 
+%              for calculating auditory?filter bandwidths and excitation
+%              patterns." The journal of the acoustical society of
+%              America 74.3 (1983): 750-753.
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
-% See also ANG2MAT, FADE, MSMATRIX
+% See also HZ2ERB, ERBS2HZ, HZ2ERBS, GETFREQCONVERTERS, RESCALEFREQ
 
-    ch = size(X,2);
-    switch ch
-        case 1
-        case 2
-            a = [a, a+pi/2];
-        otherwise
-            error('This version only supports n-by-2 signals');
-    end
-    
-    Y = (ang2mat(a) * X.').';
-    
+%   f = (100000*(10*bw-247))/107939;                       % Linear approx
+    f = (500/623) * (sqrt(249200 * bw + 80109737) - 9339); % Polynomial approx
+
 end
 
 % ------------------------------------------------------------------------
 %
-% panpot.m: distributes a signal over 2 channels
+% ERB2hz.m: return frequency given the ERB bandwidth
 % Copyright (C) 2018 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

@@ -22,7 +22,7 @@ sourcePosition = a(loc);
 tolerance = 0.08;
 
 % Viusalize data (background y axis is frequency)
-background = linspec2log(Df(2:end,:),F(2:end));
+background = rescalefreq(Df,F,'st','int');
 background = max(background,0).^0.5;
 subplot(3,1,2)
 plotDMask( D(:,1), sourcePosition, tolerance, 1, background );

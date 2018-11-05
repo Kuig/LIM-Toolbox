@@ -44,7 +44,7 @@ function [ hbs,hd,hf,ht ] = plotDistributions( X,s,C,D,Dt,Df,F,T,a,logFreq,gamma
    
     hf = subplot(3,3,[1,4]);
         if logFreq
-            [Df,N] = linspec2log(Df(2:end,:,:),F(2:end));
+            [Df,N] = rescalefreq(Df,F,'st','int');
         else
             N = F;
         end

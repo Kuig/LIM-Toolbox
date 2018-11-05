@@ -1,33 +1,21 @@
-function wavwrite( y, Fs, N, filename )
-%WAVWRITE (backward compatibility for wavwrite)
+function [ mel ] = hz2mel( f )
+%HZ2MEL convert Hz to mels
 %
-% WAVWRITE(y,'filename')
-% WAVWRITE(y,Fs,'filename')
-% WAVWRITE(y,Fs,N,'filename')
+%[ mel ] = HZ2MEL( f )
 %
-%	audiowrite wrapper for wavwrite backward compatibility
+%    Reference: O'shaughnessy, Douglas. Speech communication: human and
+%               machine. Universities press, 1987.
 %
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
-% See also WAVREAD, AUDIOWRITE, AUDIOREAD
+% See also MEL2HZ, GETFREQCONVERTERS, RESCALEFREQ
 
-	switch nargin
-		case 2
-			filename = Fs;
-			Fs = 8000;
-			N = 16;
-		case 3
-			filename = N;
-			N = 16;
-        otherwise
-	end
-
-	audiowrite(filename,y,Fs,'BitsPerSample',N);
+    mel = 2595 * log10( 1 + f/700 );
 
 end
 
 % ------------------------------------------------------------------------
 %
-% wavwrite.m: backward compatibility for wavwrite
+% hz2mel.m: convert Hz to mels
 % Copyright (C) 2014 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

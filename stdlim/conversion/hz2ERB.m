@@ -1,36 +1,29 @@
-function [ Y ] = panpot( X, a )
-%PANPOT distributes a signal over 2 channels
+function [ bw ] = hz2ERB( f )
+%HZ2ERB get bandwidths of the filters in human hearing
 %
-%[ Y ] = PANPOT( X, a )
+%[ bw ] = HZ2ERB( f )
 %
-%   If X is a vector: returns a n-by-2 matrix with a panned version of X
-%   If X is a n-by-2 matrix, rotates X rotated by a given angle
-%   
-%   a: panning or rotation angle
-%      a = 0     -> left
-%      a = pi/2  -> right
-%      a = pi/4  -> mid
-%      a = -pi/4 -> side
+%	ERB approximation of the bandwidths of the filters in human hearing, using
+%	the unrealistic but convenient simplification of modeling the filters as
+%	rectangular band-pass filters. The approximation is applicable at
+%   moderate sound levels and for values of f between 0.1 and 6.5 kHz
+%
+%   Reference: Moore, Brian CJ, and Brian R. Glasberg. "Suggested formulae 
+%              for calculating auditory?filter bandwidths and excitation
+%              patterns." The journal of the acoustical society of
+%              America 74.3 (1983): 750-753.
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
-% See also ANG2MAT, FADE, MSMATRIX
+% See also ERB2HZ, ERBS2HZ, HZ2ERBS, GETFREQCONVERTERS, RESCALEFREQ
 
-    ch = size(X,2);
-    switch ch
-        case 1
-        case 2
-            a = [a, a+pi/2];
-        otherwise
-            error('This version only supports n-by-2 signals');
-    end
-    
-    Y = (ang2mat(a) * X.').';
-    
+%   bw = 24.7*(4.37*f/1000+1);                      % Linear approx
+    bw = 6.23*(f/1000).^2 + 93.39*(f/1000) + 28.52; % Polynomial approx
+
 end
 
 % ------------------------------------------------------------------------
 %
-% panpot.m: distributes a signal over 2 channels
+% hz2ERB.m: bandwidths of the filters in human hearing
 % Copyright (C) 2018 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

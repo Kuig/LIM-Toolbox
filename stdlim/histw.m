@@ -1,23 +1,34 @@
 function [ h, edges ] = histw( x, w, bin, dim, func )
-%[ h, edges ] = histw( x, w, bin, dim, func )
+%HISTW generates weighted histograms
+%
+%[ h, edges ] = HISTW( x )
+%[ h, edges ] = HISTW( x, w )
+%[ h, edges ] = HISTW( x, w, bin )
+%[ h, edges ] = HISTW( x, w, bin, dim )
+%[ h, edges ] = HISTW( x, w, bin, dim, func )
+% 
 %   h contains the @func of w which corresponding x are in between edges
 %   bin can be a scalar (number of bins) or an array (edge list)
 %   dim is the dimension along which histw should work
 %   func is tipically @sum, but it can be also @max or other stats function
 %   all input arguments are defaulted to behave like a common histogram
+%
+%(C)2014 G.Presti (LIM) - GPL license at the end of file
+% See also HISTC, HISTCOUNTS, DISCRETIZE
+
+    if nargin < 5, func = @(X,di) sum(X,di,'omitnan'); end
+    if nargin < 4, dim = 2; end
+    if nargin < 3, bin = 10; end
+    if nargin < 2, w = ones(size(x)); end
 
     if ~ismatrix(x), error('Histw can only handle n-by-m matrix'); end
     if any(size(x) ~= size(w)), error('x and w must be of the same size'); end
+    
     % I think ther's some error here:
     if (iscolumn(x) && dim == 2) || (isrow(x) && dim == 1)
         warning('Dim argument ignored...');  
         dim = 3-dim; 
     end
-    
-    if nargin < 5, func = @(X,di) sum(X,di,'omitnan'); end
-    if nargin < 4, dim = 2; end
-    if nargin < 3, bin = 10; end
-    if nargin < 2, w = ones(size(x)); end
     
     if isscalar(bin)
         edges = binpicker(min(x(:)),max(x(:)),bin,range(x(:))/bin);
@@ -26,9 +37,9 @@ function [ h, edges ] = histw( x, w, bin, dim, func )
         bin = size(edges,1)-1;
     end
 
-    if exist('discretize') == 2
+    if exist('discretize','file') == 2
         id = discretize(x, edges);         % Introduced in Matlab R2015a
-    elseif exist('histcounts') == 2
+    elseif exist('histcounts','file') == 2
         [~, ~, id] = histcounts(x, edges); % Introduced in Matlab R2014b
     else
         [~, id] = histc(x, edges);         % DEPRECATED
@@ -146,3 +157,22 @@ end
 
 end
 
+% ------------------------------------------------------------------------
+%
+% histw.m: weighted histogram
+% Copyright (C) 2014 - Giorgio Presti - Laboratorio di Informatica Musicale
+% 
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>
+%
+% ------------------------------------------------------------------------
