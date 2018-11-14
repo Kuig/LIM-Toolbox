@@ -10,4 +10,4 @@ w = hann(2048); hop = 512;
 [R, ~, ~] = getFD(x(:,2),Fs,hop,w);
 
 % Plot Bivariate Spectrum and Principal Spectral Content Distributions
-plotDistributions( L, R, F, T, 201 );
+analyzeMixture( L, R, F, T, 200, 'yscale', 'mel', 'gamma', 0.3 );

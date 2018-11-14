@@ -32,8 +32,14 @@ ts.MEproc = @processME; % Turns exception in information to be stored
 
 t = 1;
 ts.e = {};
+fig = figure;
+
+disp(' ');
 
 %% STDLIM TESTS
+
+disp('Testing stdlim...');
+
 ts.e{t} = test_getSampleFilter(ts); t=t+1;
 ts.e{t} = test_getSampleAudio(ts);  t=t+1;
 
@@ -49,7 +55,8 @@ ts.e{t} = test_getFD_getTD(ts);  t=t+1;
 
 ts.e{t} = test_alignvector(ts);         t=t+1;
 ts.e{t} = test_fade(ts);                t=t+1;
-ts.e{t} = test_histw(ts);               t=t+1; %
+ts.e{t} = test_getBinEdges(ts);         t=t+1;
+ts.e{t} = test_histw(ts);               t=t+1;
 ts.e{t} = test_fixangles(ts);           t=t+1;
 ts.e{t} = test_ang2mat(ts);             t=t+1;
 ts.e{t} = test_panpot(ts);              t=t+1;
@@ -64,11 +71,32 @@ ts.e{t} = test_getfbank(ts);            t=t+1; %
 ts.e{t} = test_msmatrix(ts);            t=t+1;
 ts.e{t} = test_rescaleamp(ts);          t=t+1;
 ts.e{t} = test_rescalefreq(ts);         t=t+1;
+ts.e{t} = test_whitening(ts);           t=t+1;
 
 
 %% BMS TESTS
 
+disp('Testing BMS...');
 
+ts.e{t} = test_BMS(ts);                 t=t+1;
+ts.e{t} = test_SAngle(ts);              t=t+1;
+ts.e{t} = test_CCorr(ts);               t=t+1;
+ts.e{t} = test_BS(ts);                  t=t+1;
+
+% Generating BMS for tests
+[ts.X, ts.s, ts.C] = BS(ts.X1,ts.X2);
+
+ts.e{t} = test_getMixtureHists(ts);     t=t+1; %
+
+[ ts.edges, ts.centers ] = getBinEdges(100, [-pi/2,pi/2]);
+[ts.D, ts.Df, ts.Dt] = getMixtureHists(ts.X,ts.s,ts.C,ts.edges);
+
+ts.e{t} = test_PSC(ts);                 t=t+1;
+ts.e{t} = test_icabybms(ts);            t=t+1;
+ts.e{t} = test_angleMask(ts);           t=t+1;
+ts.e{t} = test_plotBS(ts);              t=t+1;
+ts.e{t} = test_plotdm(ts);              t=t+1;
+ts.e{t} = test_analyzeMixture(ts);      t=t+1;
 
 %% REPORT
 
@@ -86,6 +114,7 @@ else
 end
 
 disp(' ');
+close(fig);
 
 end
 
@@ -183,6 +212,19 @@ function er = test_fade(ts)
     end
 end
 
+function er = test_getBinEdges(ts)
+    try
+        [ ~, ~ ] = getBinEdges();
+        [ ~, c ] = getBinEdges(1,[0 1]);
+        if mse(c, 0.5) > ts.maxErr
+            error('getBinEdges performed with too much error');
+        end
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'getBinEdges');
+    end
+end
+
 function er = test_getfbank(ts)
     try
         [ ~, ~ ] = getfbank(ts.F);
@@ -204,7 +246,8 @@ function er = test_histw(ts)
         [ ~, ~ ] = histw( x, w, edges );
         [ ~, ~ ] = histw( x, w, edges, 1 );
         [ ~, ~ ] = histw( x, w, edges, 2 );
-        [ ~, ~ ] = histw( x, w, edges, 1, @mean );
+        [ ~, ~ ] = histw( x, w, edges, [1 2], @mean );
+        [ ~, ~ ] = histw( x(:), w(:), edges, [1 2] );
         er = ts.noErr;
     catch ME
         er = ts.MEproc(ME,'histw');
@@ -372,6 +415,126 @@ function er = test_getFreqConverters(ts)
     end
 end
 
+function er = test_whitening(ts)
+    try
+        [ ~, ~, ~ ] = whitening(ts.x);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'whitening');
+    end
+end
+
+% --------------- BMS --------------- %
+
+function er = test_BMS(ts)
+    try
+        BMS(ts.X1,ts.X2,pi);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'BMS');
+        error('Error in function BMS(), cannot continue tests');
+    end
+end
+
+function er = test_BS(ts)
+    try
+        [~,~,~] = BS(ts.X1,ts.X2);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'BS');
+        error('Error in function BS(), cannot continue tests');
+    end
+end
+
+function er = test_CCorr(ts)
+    try
+        CCorr(ts.X1,ts.X2);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'CCorr');
+        error('Error in function CCorr(), cannot continue tests');
+    end
+end
+
+function er = test_getMixtureHists(ts)
+    try
+        edg = getBinEdges(50,[-pi/2,pi/2]);
+        [~, ~] = getMixtureHists (ts.X, ts.s, ts.C, edg);
+        [~, ~, ~] = getMixtureHists (ts.X, ts.s, ts.C, edg);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'getMixtureHists');
+    end
+end
+
+function er = test_PSC(ts)
+    try
+        [ ~, ~ ] = PSC( ts.X1, ts.X2 );
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'PSC');
+    end
+end
+
+function er = test_SAngle(ts)
+    try
+        SAngle(ts.X1,ts.X2);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'SAngle');
+        error('Error in function SAngle(), cannot continue tests');
+    end
+end
+
+function er = test_icabybms(ts)
+    try
+        [ ~, ~, ~, ~, ~, ~ ] = icabybms( ts.x );
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'icabybms');
+    end
+end
+
+function er = test_angleMask(ts)
+    try
+        [ ~ ] = angleMask( ts.s, 0, [-1,1] );
+        [ ~ ] = angleMask( ts.centers, 0, [-1,1], 'type', 'gauss', 'saturation', 10 );
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'angleMask');
+    end
+end
+
+function er = test_plotBS(ts)
+    try
+        [ ~, ~ ] = plotBS( ts.X, ts.s, ts.C, ts.F, ts.T );
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'plotBS');
+    end
+end
+
+function er = test_plotdm(ts)
+    try
+        plotdm(ts.D)
+        plotdm(ts.D,0,0.5,'rotate','on');
+        plotdm(ts.D,0,0.5,'rotate','on','background',ts.Dt.');
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'plotdm');
+    end
+end
+
+function er = test_analyzeMixture(ts)
+    try
+        [~, ~] = analyzeMixture( ts.X1, ts.X2, ts.F, ts.T, 100);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'analyzeMixture');
+    end
+end
+
+% --------------- LSF --------------- %
 
 
 % ------------------------------------------------------------------------

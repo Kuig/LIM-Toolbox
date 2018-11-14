@@ -1,28 +1,35 @@
-function [ X, s, C ] = BS( X1, X2 )
-%BS calculates Principal Spectral Components and Relational Content
+function [ edges, centers ] = getBinEdges( bin, lim )
+%GETBINEDGES returns edges and bin centers
 %
-%[ X, s, C ] = BS( X1, X2 )
+%[ edges, centers ] = GETBINEDGES( bin, lim )
 %
-%   X: Principal Spectral Components of each corresponding X1 and X2 bin
-%   s: Peaking BMS angles for each corresponding X1 and X2 bin
-%   C: Correlation of each corresponding X1 and X2 bin
+%   bin: number of bins (default: 180)
+%   lim: limits in the form [min, max] (default: [-pi/2, pi/2])
 %
-%   Reference: Presti, G. "Signal transformations for improving information
-%              representation, feature extraction and source separation."
-%              PhD Thesis (2017).
+%   edges:   bins edges list
+%   centers: bins centers list
 %
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
-% See also BMS, CCORR, SANGLE, PSC
+% See also HISTW
 
-    s = SAngle(X1,X2);
-    X = BMS(X1,X2,s);
-    C = CCorr(X1,X2);
+    if nargin < 1, bin = 180; end
+    if nargin < 2, lim = [ -pi/2, pi/2 ]; end
+
+    lim = sort(lim);
+    
+    % calc bin edges
+    edges = linspace( lim(1), lim(end), bin+1 );
+    
+    if nargout > 1
+        % convert edges to centers
+        centers = edges(1:end-1) + ( lim(end) - lim(1) ) / (2 * bin);
+    end
     
 end
 
 % ------------------------------------------------------------------------
 %
-% BS.m: calculates Principal Spectral Components and Relational Content
+% getBinEdges.m: returns edges and bin centers
 % Copyright (C) 2014 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify

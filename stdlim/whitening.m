@@ -1,27 +1,39 @@
-function [ C ] = CCorr( X1, X2 )
-%CCORR calculate the correlation between each bin of the provided mixtures
+function [ y, wm, dwm ] = whitening( x )
+% WHITENING whitens a multivariate signal
 %
-%[ C ] = CCorr( X1, X2 )
+%[ x, wm, dwm ] = WHITENING( x )
 %
-%   Reference: Presti, G. "Signal transformations for improving information
-%              representation, feature extraction and source separation."
-%              PhD Thesis (2017).
+%   Columns of x are vriables, while rows are observations
 %
-%(C)2009 G.Presti (LIM) - GPL license at the end of file
-% See also BS, BMS, SANGLE, PSC
+%(C)2018 G.Presti (LIM) - GPL license at the end of file
+% See also COV, EIG
 
-    if any (size(X1) ~= size(X2))
-        error('X1 and X2 must be of same size');
+    epsilon = 1e-7;
+
+    cm  = cov(x, 1);
+    [E, D] = eig (cm);
+    
+    if all(diag (D) < epsilon)
+        y = x;
+        wm = NaN;
+        dwm = NaN;
+    else
+        wm  = (sqrt (D)) \ E.';
+        dwm = E * sqrt (D);
+        y   = (wm * x.').';
+        if ~isreal(y)
+            y = x;
+            wm = NaN;
+            dwm = NaN;
+        end
     end
-
-    C = cos(angle(X1)-angle(X2));
 
 end
 
 % ------------------------------------------------------------------------
 %
-% CCorr.m: calculate the correlation between each bin of the provided mixtures
-% Copyright (C) 2009 - Giorgio Presti - Laboratorio di Informatica Musicale
+% whitening.m: whitens multivariate signal
+% Copyright (C) 2014 - Giorgio Presti - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by

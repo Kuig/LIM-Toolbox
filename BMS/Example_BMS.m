@@ -12,8 +12,8 @@ w = hann(2048); hop = 512;
 [L, F, T] = getFD(x(:,1),Fs,hop,w);
 [R, ~, ~] = getFD(x(:,2),Fs,hop,w);
 
-% Resamples input mixture at different angles
-% (creates a rotating effect!)
+% Trivial resampling of the input mixtures
+% (creates a rotating effect)
 a = linspace(-pi,pi,numel(T));
 newL = BMS(L, R, a );
 newR = BMS(L, R, a + pi/4 );
@@ -23,19 +23,19 @@ y = zeros(len,2);
 y(:,1) = getTD(newL, hop, len, w);
 y(:,2) = getTD(newR, hop, len, w);
 
-% Listen to result
+% Listen to result (ideally with hedphones)
 sound(y,Fs);
 
 % Plot input and output Bivariate Spectra
 subplot(2,1,1)
     [X,s,C] = BS(L,R);
-    plotBS(X,s,C,F,T);
-    grid on, ylim([40,128]);
+    plotBS(X,s,C,F,T,'yscale','mel');
+    grid on; ylabel('mels'); xlabel('Time');
     title('Input');
     
 subplot(2,1,2)
     [X,s,C] = BS(newL,newR);
-    plotBS(X,s,C,F,T);
-    grid on, ylim([40,128]);
+    plotBS(X,s,C,F,T,'yscale','mel');
+    grid on, ylabel('mels'); xlabel('Time');
     title('Output');
     
