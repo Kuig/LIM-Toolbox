@@ -1,12 +1,7 @@
 # LIM-Toolbox (beta)
 
-<<<<<<< HEAD
 `LIM-Toolbox` is a collection of basic Matlab functions used in sound and music computing research. This also includes some tools developed at the *Laboratorio di Informatica Musicale* (University of Milan, Computer Science department) concerning bivariate signal analisys and other signal processing techniques. The project is currently not ready for distribution, nevertheless who am I to keep you from downloading and trying it?
 I hope to complete the references very soon.
-=======
-`LIM-Toolbox` is a collection of basic MATLAB functions used in sound and music computing research. This also includes some tools developed at the *Laboratorio di Informatica Musicale* (University of Milan, Computer Science department) concerning bivariate signal analisys and other signal processing techniques. The project is currently not ready for distribution, nevertheless who am I to keep you from downloading and trying it?
-I hope to complete the reference manual very soon.
->>>>>>> 44b055f2acababe1a7bbf413a041779da01091e2
 
 ## Requirements
 
