@@ -30,6 +30,7 @@ It has been tested on MATLAB R2015a + DSP Toolbox, but it should work even with 
 Well, by now the only publications available are the following:
 
 > Signal transformations for improving information representation, feature extraction and source separation / G. Presti - PhD Thesis, 2017
+
 > Visualization and manipulation of stereophonic audio signals by means of IID and IPD / G. Presti, G. Haus, D.A. Mauro - In: ICMC|SMC|2014, 14-20 September 2014, Athens, Greece - The National and Kapodistrian Unversity of Athens, 2014 Sep. - ISBN 978-960-466-137-4. - pp. 1497-1502
 
 But many other works are being published, please stand by...
