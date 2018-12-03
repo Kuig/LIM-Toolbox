@@ -62,7 +62,8 @@ function [ out, sources, pans ] = getSampleAudio( dur, Fs, ch, src )
     pads = zeros(len,1);
     if any(ismember('pads',src))
         scale = [0, -5, 4, 7, 12]+baseNote-24;
-        dcy = 2.5 * Fs;
+        dcy = ceil(2.5 * Fs);
+        dcy = min(dcy,len-1);
         timing = 1+round(rand(length(scale))*(len-dcy-1));
         pads = zeros(len,1);
         for b = 1:length(scale)
