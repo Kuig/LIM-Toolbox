@@ -12,11 +12,11 @@
 % To use it, all mixtures in the dataset should be discarted, and all
 % remaining wav files has to be collected in one folder. In absence of
 % the dataset, random data will be generated, but results may differ from
-% the reoprted ones (BMS performs better with real world signals).
+% the reoprted ones.
 
 %% Main test variables
-nOfTest     = 50;  % Number of test to run
-dataPath    = '.\Dataset\';   % Dataset path (if '', random data will be generated)
+nOfTest     = 500;  % Number of test to run
+dataPath    = '';   % Dataset path (in the format './Folder/'. If '', uses random data)
 plotDetails = 0;    % Display PC and scatterplot of each sample
 savePlots   = 0;    % Save final plots to PDF
 
@@ -24,7 +24,6 @@ savePlots   = 0;    % Save final plots to PDF
 sr        = 44100;  % Sampling frequency (Hz)
 maxlen    = 30;     % Maximum sample length (sec)
 minlen    = 1;      % Minimum sample length (sec)
-reso      = 180;    % # of BMS angles distribution bins
 skipThres = -32;    % Minimum test RMS (dBfs)
 
 % Test dependencies
@@ -36,12 +35,23 @@ wbar = waitbar(0,'Initializing...');
 rng(42);                      % For reprocucibility
 timing    = zeros(nOfTest,2); % Time needed to execute each test
 results   = cell(nOfTest,2);  % Results of each test
-errors    = zeros(nOfTest,2); % Errors of each test
+scores    = zeros(nOfTest,2); % Errors of each test
 A         = cell(nOfTest,1);  % Filenames of source 1 of each tests
 B         = cell(nOfTest,1);  % Filenames of source 2 of each tests
 nOfIters  = zeros(nOfTest,1); % Number of FastICA iterations of each test
 skipThres = db2amp(skipThres);% Others small init steps...
+
+% Initialize dataset
 flist     = dir([dataPath,'*.wav']);
+noDataset = isempty(dataPath) || isempty(flist); % Is dataset missing?
+
+% Settings for the ICA-by-BMS function
+sets.resolution = 180;      % # of BMS angles distribution bins
+sets.refineMode = 'top5';   % Angle refine method
+sets.corrWeight = 0.5;      % C exponent in weighted distribution
+sets.smoothing  = pi/180;   % Distribution smoothing
+sets.ampExp     = 1;        % Amplitude exponent in weighted distribution
+sets.whitening  = 'on';     % Use whitening
 
 % Generate random mixture parameters for all tests
 angles = rand(nOfTest,2)*pi-pi/2;
@@ -52,7 +62,7 @@ for tst = 1:nOfTest
     waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (load)...',tst,nOfTest));
     
     % Load a sample from dataset or generate it from scratch
-    if isempty(dataPath) || isempty(flist)
+    if noDataset
         [ x, A{tst}, B{tst} ] = gensample(len(tst), sr, skipThres);
     else
         [ x, A{tst}, B{tst} ] = loadsample(dataPath, flist, len(tst)*sr, skipThres);
@@ -64,11 +74,11 @@ for tst = 1:nOfTest
 
     % Test FastICA
     waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (ICA)...',tst,nOfTest));
-    [errors(tst,1), timing(tst,1), results{tst,1}, nOfIters(tst)] = test_ica(y, mixMatrix);
+    [scores(tst,1), timing(tst,1), results{tst,1}, nOfIters(tst)] = test_ica(y, mixMatrix);
 
     % Test ICA by BMS
     waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (BMS)...',tst,nOfTest));
-    [errors(tst,2), timing(tst,2), results{tst,2}] = test_bms(y, reso, mixMatrix);
+    [scores(tst,2), timing(tst,2), results{tst,2}] = test_bms(y, mixMatrix, sets);
 
     % Plot data if asked
     if plotDetails
@@ -79,11 +89,11 @@ for tst = 1:nOfTest
 end
 
 %% Display statistics about results
-stats (errors, timing, nOfIters, nOfTest);
+stats (scores, timing, nOfIters, nOfTest);
 
 % Plot results
 waitbar(1,wbar,'Plotting...');
-endplot (errors, timing, len, nOfIters, nOfTest, sr, savePlots);
+endplot (scores, timing, len, nOfIters, nOfTest, sr, savePlots);
 
 %% Restore default environment
 close(wbar)

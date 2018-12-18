@@ -8,7 +8,7 @@ function [] = endplot (BEerrs, timing, len, nOfIters, nOfTest, sr, savePlots)
     ylabel('Tasks count');
     xlabel('\Delta MER (dB)');
     xlim([-60,60]);
-    title('Distribution of the difference between FastICA and BMS-ICA mean MER');
+    title({'Distribution of FastICA and BMS-ICA delta mean MER','(positive scores mean better BMS performance)'});
             fig=gcf;
             set(findall(fig,'-property','FontName'),'FontName','Consolas')
             set(findall(fig,'-property','FontSize'),'FontSize',12)
