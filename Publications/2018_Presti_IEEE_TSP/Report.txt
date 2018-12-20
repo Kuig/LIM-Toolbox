@@ -6,7 +6,7 @@ ICA-BMS only found 1 source 0 times over 500 tests (0.00%)
 
 Mean of MER difference: 4.416 dB (BMS seems better)
 SD of MER difference: 14.7242 dB
-MER scores are significantly different!
+MER scores are not significantly different
 p-value: 0.35107
 
 Median of timing difference: -0.054092 s (BMS seems faster)

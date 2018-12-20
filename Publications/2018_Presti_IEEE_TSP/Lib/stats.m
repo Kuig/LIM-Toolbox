@@ -29,9 +29,9 @@ function stats(scores, timing, nOfIters, nOfTest)
     % t-test
     [h, p] = ttest(scores(1,:),scores(2,:));
     if h
-        disp('MER scores are not significantly different');
-    else
         disp('MER scores may be significantly different!');
+    else
+        disp('MER scores are not significantly different');
     end
     disp(['p-value: ',num2str(p)]);
     fprintf('\n');

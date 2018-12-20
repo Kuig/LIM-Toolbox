@@ -17,6 +17,9 @@ function [ s ] = SAngle( X1, X2 )
     s = 0.5 .* atan2 ( 2.*(imag(X1).*imag(X2) + real(X1).*real(X2)),...
                        abs(X1).^2-abs(X2).^2 );
 
+%     s = 0.5 .* atan2 ( 2 .* abs(X1) .* abs(X2) .* cos(angle(X1)-angle(X2)),...
+%                        abs(X1).^2-abs(X2).^2 );
+
 end
 
 % ------------------------------------------------------------------------
