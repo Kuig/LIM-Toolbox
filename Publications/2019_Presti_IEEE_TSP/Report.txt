@@ -1,0 +1,10 @@
+Mean of MER difference: -3.0676 dB (SOBI seems better)
+SD of MER difference: 13.3037 dB
+MER scores may be significantly different!
+p-value: 3.6451e-07
+
+
+SOBI empirically faster 0 times (0.00%)
+Median of timing difference: -2.0807 s (BMS seems faster)
+Speed is significantly different!
+p-value: 1.0793e-144

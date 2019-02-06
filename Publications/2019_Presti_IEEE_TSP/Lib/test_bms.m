@@ -9,6 +9,7 @@ function [BEerrs, timing, ba] = test_bms (y, mixMatrix, sets)
                                 'smoothing',sets.smoothing,...
                                 'ampExp',sets.ampExp,...
                                 'whitening',sets.whitening);
+                            
     timing = toc;
     if numel(ba)<2
         ba = [NaN, NaN];

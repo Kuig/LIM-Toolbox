@@ -14,7 +14,8 @@ function [ C ] = CCorr( X1, X2 )
         error('X1 and X2 must be of same size');
     end
 
-    C = cos(angle(X1)-angle(X2));
+  % C = cos(angle(X1)-angle(X2));
+    C = cos( angle( X1.*conj(X2) ) );
 
 end
 

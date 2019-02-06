@@ -11,6 +11,7 @@ function [ ica, W, A, ma, Dp, a ] = icabybms( x, varargin )
 % Optional parameters are:
 %
 %   'whitening' : {'on', 'off'} (def 'on') - Use whitening?
+%   'WSpeedUp'  : {'on', 'off'} (def 'on') - Exploit whitening to speed up peak finding
 %   'resolution': int > 0 or 'auto' (def 180) - Distribution bins number
 %   'corrWeight': real >= 0 (def 1) - Gamma parameter
 %   'smoothing' : real >= 0 (def 0) - Smoothing radius in radians
@@ -34,7 +35,7 @@ function [ ica, W, A, ma, Dp, a ] = icabybms( x, varargin )
 % See also WHITENING
     
     % Parsing input arguments
-    [reso, refineMode, cWeight, smth, ascale, whit] = parseargs(varargin{:});
+    [reso, refineMode, cWeight, smth, ascale, whit,wsu] = parseargs(varargin{:});
 
     % Choose appropriate resolution for angles distribution if needed
     if strcmpi(reso,'auto')
@@ -86,14 +87,14 @@ function [ ica, W, A, ma, Dp, a ] = icabybms( x, varargin )
     end
     
     % Find distribution peak(s)
-    if strcmpi(whit,'off')
+    if strcmpi(whit,'off') || strcmpi(wsu,'off')
         [~, mi] = findpeaks(Dp,'SortStr','descend','NPeaks',2);
     else
         [~, mi] = max(Dp);
     end
     ma = a(mi);
     
-    % Look inside peaking distribution bn to find actual peak
+    % Look inside peaking distribution bin to find actual peak
     s = s(:); weight = weight(:);
     for c = 1:numel(ma)
         msk = (s>(ma(c)-pi/reso)) & (s<(ma(c)+pi/reso));
@@ -118,7 +119,9 @@ function [ ica, W, A, ma, Dp, a ] = icabybms( x, varargin )
 
     % Calculate mixing matrix from the angles found
     if strcmpi(whit,'on')
-        ma(2) =  ma(1)+pi/2;
+        if strcmpi(wsu,'on')
+            ma(2) =  ma(1)+pi/2;
+        end
         W = dwm*[cos(ma);sin(ma)]; % Matrice di mix
         [W,ma] = fixangles(W);
     else
@@ -138,7 +141,7 @@ function [ ica, W, A, ma, Dp, a ] = icabybms( x, varargin )
     
 end
 
-function [reso, refineMode, cWeight, smth, ascale, whit] = parseargs(varargin)
+function [reso, refineMode, cWeight, smth, ascale, whit, wsu] = parseargs(varargin)
 % This is the input arguments parser
     p = inputParser;
     
@@ -162,12 +165,17 @@ function [reso, refineMode, cWeight, smth, ascale, whit] = parseargs(varargin)
     valWit = {'on', 'off'};
     chkWit = @(x) any(validatestring(x,valWit));
 
+    defwsu = 'on';
+    valwsu = {'on', 'off'};
+    chkwsu = @(x) any(validatestring(x,valwsu));
+    
     addParameter(p,'resolution',defReso,chkReso);
     addParameter(p,'refineMode',defRefM,chkRefM);
     addParameter(p,'corrWeight',defCWei,chkCWei);
     addParameter(p,'smoothing',defSmth,chkSmth);
     addParameter(p,'ampExp',defScale,chkScale);
     addParameter(p,'whitening',defWit,chkWit);
+    addParameter(p,'WSpeedUp',defwsu,chkwsu);
     
     parse(p,varargin{:})
     
@@ -177,6 +185,7 @@ function [reso, refineMode, cWeight, smth, ascale, whit] = parseargs(varargin)
     smth = p.Results.smoothing;
     ascale = p.Results.ampExp;
     whit = p.Results.whitening;
+    wsu = p.Results.WSpeedUp;
 end
 
 function [ ang ] = guessangle( y, numSamples, threshold, bounds )

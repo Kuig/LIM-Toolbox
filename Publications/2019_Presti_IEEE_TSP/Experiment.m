@@ -1,5 +1,5 @@
 % The Bivariate Mixture Space: a novel method for
-% representing bivariate signals.
+% representing bivariate mixtures.
 %
 % G. Presti - Laboratorio di Informatica Musicale
 % Universita' degli studi di milano - Milano (IT)
@@ -38,7 +38,6 @@ results   = cell(nOfTest,2);  % Results of each test
 scores    = zeros(nOfTest,2); % Errors of each test
 A         = cell(nOfTest,1);  % Filenames of source 1 of each tests
 B         = cell(nOfTest,1);  % Filenames of source 2 of each tests
-nOfIters  = zeros(nOfTest,1); % Number of FastICA iterations of each test
 skipThres = db2amp(skipThres);% Others small init steps...
 
 % Initialize dataset
@@ -46,8 +45,8 @@ flist     = dir([dataPath,'*.wav']);
 noDataset = isempty(dataPath) || isempty(flist); % Is dataset missing?
 
 % Settings for the ICA-by-BMS function
-sets.resolution = 180;      % # of BMS angles distribution bins
-sets.refineMode = 'top5';   % Angle refine method
+sets.resolution = 180;      % # of BMS sigma-distribution bins
+sets.refineMode = 'top5';   % Sigma-distribution peak refine method
 sets.corrWeight = 0.5;      % C exponent in weighted distribution
 sets.smoothing  = pi/180;   % Distribution smoothing
 sets.ampExp     = 1;        % Amplitude exponent in weighted distribution
@@ -72,10 +71,10 @@ for tst = 1:nOfTest
     mixMatrix = ang2mat(angles(tst,:));
     y = (mixMatrix*x.').';
 
-    % Test FastICA
-    waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (ICA)...',tst,nOfTest));
-    [scores(tst,1), timing(tst,1), results{tst,1}, nOfIters(tst)] = test_ica(y, mixMatrix);
-
+    % Test SOBI
+    waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (SOBI)...',tst,nOfTest));
+    [scores(tst,1), timing(tst,1), results{tst,1}] = test_sobi(y, mixMatrix);
+    
     % Test ICA by BMS
     waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (BMS)...',tst,nOfTest));
     [scores(tst,2), timing(tst,2), results{tst,2}] = test_bms(y, mixMatrix, sets);
@@ -89,11 +88,11 @@ for tst = 1:nOfTest
 end
 
 %% Display statistics about results
-stats (scores, timing, nOfIters, nOfTest);
+stats (scores, timing, nOfTest);
 
 % Plot results
 waitbar(1,wbar,'Plotting...');
-endplot (scores, timing, len, nOfIters, nOfTest, sr, savePlots);
+endplot (scores, timing, len, nOfTest, sr, savePlots);
 
 %% Restore default environment
 close(wbar)

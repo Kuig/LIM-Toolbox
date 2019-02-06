@@ -15,7 +15,7 @@ function [] = testplot(results,tst,y,angles)
 
 
     hold off;
-    legend(p,'Ground truth','Fixed FastICA','BMS-ICA');
+    legend(p,'Ground truth','Fixed SOBI','BMS-ICA');
     lim = 1.25;
     xlim([-lim,lim]);
     ylim([-lim,lim]);

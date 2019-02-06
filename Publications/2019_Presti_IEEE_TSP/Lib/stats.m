@@ -1,23 +1,14 @@
-function stats(scores, timing, nOfIters, nOfTest)
+function stats(scores, timing, nOfTest)
 % This script is called by the main test script to report experiment stats
 
     clc
-    empt = diff(timing,1,2)>0;
-
-    fprintf('FastICA empirically faster %d times (%.2f%%)\n',sum(empt),100*sum(empt)/nOfTest);
-    fprintf('Mean and SD of number of iterations: %.2f (%.2f)\n\n',mean(nOfIters(empt)),std(nOfIters(empt)));
-
-    dnc = sum(isnan(scores(:,1)));
-    dnb = sum(isnan(scores(:,2)));
-    fprintf('FastICA did not converged %d times over %d tests (%.2f%%)\n',dnc,nOfTest,100*dnc/nOfTest);
-    fprintf('ICA-BMS only found 1 source %d times over %d tests (%.2f%%)\n\n',dnb,nOfTest,100*dnb/nOfTest);
 
     scorediff = diff(scores,1,2);
     smean = mean(scorediff,'omitnan');
     ssd = std(scorediff,'omitnan');
     switch sign(smean)
         case -1
-            winner = '(FastICA seems better)';
+            winner = '(SOBI seems better)';
         case +1
             winner = '(BMS seems better)';
         otherwise
@@ -27,7 +18,7 @@ function stats(scores, timing, nOfIters, nOfTest)
     disp(['SD of MER difference: ',num2str(ssd),' dB']);
     
     % t-test
-    [h, p] = ttest(scores(1,:),scores(2,:));
+    [h, p] = ttest(scores(:,1),scores(:,2));
     if h
         disp('MER scores may be significantly different!');
     else
@@ -36,6 +27,10 @@ function stats(scores, timing, nOfIters, nOfTest)
     disp(['p-value: ',num2str(p)]);
     fprintf('\n');
 
+    empt = diff(timing,1,2)>0;
+
+    fprintf('\nSOBI empirically faster %d times (%.2f%%)\n',sum(empt),100*sum(empt)/nOfTest);
+    
     % Mann–Whitney U test
     Tdiff = diff(timing,1,2);
     Tmedian = median(Tdiff,'omitnan');
@@ -43,7 +38,7 @@ function stats(scores, timing, nOfIters, nOfTest)
         case -1
             winner = '(BMS seems faster)';
         case +1
-            winner = '(FastICA seems faster)';
+            winner = '(SOBI seems faster)';
         otherwise
             winner = '';
     end

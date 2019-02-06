@@ -2,10 +2,12 @@ function [ X, s, C ] = BS( X1, X2 )
 %BS calculates Principal Spectral Components and Relational Content
 %
 %[ X, s, C ] = BS( X1, X2 )
+%[ X, R ] = BS( X1, X2 )
 %
 %   X: Principal Spectral Components of each corresponding X1 and X2 bin
 %   s: Peaking BMS angles for each corresponding X1 and X2 bin
 %   C: Correlation of each corresponding X1 and X2 bin
+%   R: Relational content (complex sigma of each corresponding X1 and X2 bin) 
 %
 %   Reference: Presti, G. "Signal transformations for improving information
 %              representation, feature extraction and source separation."
@@ -16,7 +18,11 @@ function [ X, s, C ] = BS( X1, X2 )
 
     s = SAngle(X1,X2);
     X = BMS(X1,X2,s);
-    C = CCorr(X1,X2);
+    if nargout > 2
+        C = CCorr(X1,X2);
+    else
+        s = abs(s) .* exp(1i * (angle(X1)-angle(X2)));
+    end
     
 end
 

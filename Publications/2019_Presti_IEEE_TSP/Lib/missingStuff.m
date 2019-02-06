@@ -9,13 +9,6 @@ function m = missingStuff()
     end
     
     try
-        [ ~ ] = fastica( [1,0,0;0,1,0],'verbose', 'off' );
-    catch
-        disp(' - FastICA not found (https://research.ics.aalto.fi/ica/fastica/code/dlcode.shtml)');
-        m = m+1;
-    end
-    
-    try
         [ ~ ] = bss_eval_mix( [1,0;0,1], [1,0;0,1] );
     catch
         disp(' - BSS_Eval not found (http://bass-db.gforge.inria.fr/bss_eval/)');

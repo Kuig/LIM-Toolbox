@@ -8,7 +8,7 @@ function [ ts ] = lim_toolbox_test ()
 %
 %   ts.e: cell array containing error messages
 %
-%(C)2018 - G.PRESTI, LABORATORIO DI INFORMATICA MUSICALE
+%(C)2019 - G.PRESTI, LABORATORIO DI INFORMATICA MUSICALE
 %Dipartimento di Informatica "Giovanni Degli Antoni"
 %Università degli Studi di Milano
 %Via Celoria, 18 - 20133 Milano (Italy)
@@ -85,6 +85,7 @@ ts.e{t} = test_BS(ts);                  t=t+1;
 
 % Generating BMS for tests
 [ts.X, ts.s, ts.C] = BS(ts.X1,ts.X2);
+[ts.X, ts.R]       = BS(ts.X1,ts.X2);
 
 ts.e{t} = test_getMixtureHists(ts);     t=t+1; %
 
@@ -97,6 +98,7 @@ ts.e{t} = test_angleMask(ts);           t=t+1;
 ts.e{t} = test_plotBS(ts);              t=t+1;
 ts.e{t} = test_plotdm(ts);              t=t+1;
 ts.e{t} = test_analyzeMixture(ts);      t=t+1;
+ts.e{t} = test_iBS(ts);                 t=t+1;
 
 %% REPORT
 
@@ -439,10 +441,20 @@ end
 function er = test_BS(ts)
     try
         [~,~,~] = BS(ts.X1,ts.X2);
+        [~,~]   = BS(ts.X1,ts.X2);
         er = ts.noErr;
     catch ME
         er = ts.MEproc(ME,'BS');
         error('Error in function BS(), cannot continue tests');
+    end
+end
+
+function er = test_iBS(ts)
+    try
+        [~,~] = iBS(ts.X,ts.R);
+        er = ts.noErr;
+    catch ME
+        er = ts.MEproc(ME,'iBS');
     end
 end
 
@@ -533,6 +545,7 @@ function er = test_analyzeMixture(ts)
         er = ts.MEproc(ME,'analyzeMixture');
     end
 end
+
 
 % --------------- LSF --------------- %
 
