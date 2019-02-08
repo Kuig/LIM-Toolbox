@@ -17,10 +17,6 @@ It has been tested on MATLAB R2015a + DSP Toolbox, but it should work even with 
 
 `BMS` folder contains Bivariate Mixture Space functions and examples.
 
-### LSF
-
-`LSF` folder contains Linear Structure Field and Spectro-Temporal Structure Field functions and examples.
-
 ### Publications
 
 `Publications` folder contains the scripts required to replicate the experiments described in the publications based on `LIM-Toolbox`.
