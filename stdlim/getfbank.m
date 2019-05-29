@@ -5,6 +5,7 @@ function [ fbank, cent ] = getfbank( F, bw, scale, wfunc, nb )
 %[ fbank, cent ] = GETFBANK( F, bw )
 %[ fbank, cent ] = GETFBANK( F, bw, scale )
 %[ fbank, cent ] = GETFBANK( F, bw, scale, wfunc )
+%[ fbank, cent ] = GETFBANK( F, xf, __ )           :::::: to be implemented
 %[ fbank, cent ] = GETFBANK( F, 'auto', scale, wfunc, nb )
 %
 %   get a filterbank fbank such fbank*getFD(x) is a filtered version of x.
@@ -13,6 +14,7 @@ function [ fbank, cent ] = getfbank( F, bw, scale, wfunc, nb )
 %
 %   F:     Frequency of FFT bins (must be sorted in increasing order
 %   bw:    badwidth of each filter (expressed in 'scale', default: 'auto')
+%   xf:    Crossover frequencies array (expressed in 'scale')
 %   scale: 'mel', 'bark', 'erbs', 'semitone', 'hz', 'log' (default: 'mel')
 %   wfunc: Filter window function (default: @triang)
 %
@@ -39,7 +41,7 @@ function [ fbank, cent ] = getfbank( F, bw, scale, wfunc, nb )
     
     low  = f2x(F(first_el));
     high = f2x(F(end));
-    
+    %% ToDo: if bw (aka xf) is a vector, use it as band split points 
     if strcmpi('auto',bw)
         if nargin < 5
             nb = getErbEqNb(F, f2x);
@@ -52,7 +54,7 @@ function [ fbank, cent ] = getfbank( F, bw, scale, wfunc, nb )
     cent = low + linspace(1,nband,nband).*bw;
     inferior = x2f(cent-bw);
     superior = x2f(cent+bw);
-    
+    %%
     n = length(F);
     fbank=zeros(nband,n);
     for b=1:nband 

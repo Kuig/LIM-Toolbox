@@ -1,7 +1,7 @@
 function [ Y, N ] = rescalefreq( X, F, fscale, imode, reso )
 %RESCALEFREQ transform frequency axis to a given scale 
 %
-%[ Y, N ] = RESCALEFREQ( X, F, fscale, imode, param )
+%[ Y, N ] = RESCALEFREQ( X, F, fscale, imode, reso )
 %
 %   X:      m-by-p matrix of the spectrum
 %   F:      frequency column array of lenght m

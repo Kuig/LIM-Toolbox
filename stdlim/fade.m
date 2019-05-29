@@ -1,31 +1,40 @@
-function [ x ] = fade( x, direction, len, slope )
+function [ x ] = fade( x, direction, len, slope, shape )
 %FADE fades beginning or ending of the columns of a signal
 %
-%[ x ] = FADE( x, direction, len, slope )
+%[ x ] = FADE( x, direction, len, slope, shape )
 %
 %   direction: fade 'in', 'out', 'inout'
 %   len:       duration of the fade in samples
 %   slope:     exponent of the modulation ramp
+%   shape:     'lin' (default) or 'cos'
 %
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
 % See also PANPOT, OVERLAP
 
     if nargin < 4, slope = 0.5; end
+    if nargin < 5, shape = 'lin'; end
     if len > size(x,1), error('Error using fade(): fade longer than signal'); end
     switch lower(direction)
         case 'in'
-            env = (linspace(0,1,len).').^slope;
+            env = am(0,len,slope,shape);
             x(1:len,:) = bsxfun(@times, x(1:len,:), env);
         case 'out'
-            env = (linspace(1,0,len).').^slope;
+            env = am(1,len,slope,shape);
             x(1+end-len:end,:) = bsxfun(@times, x(1+end-len:end,:), env);
         case 'inout'
-            x = fade(x, 'in', len, slope);
-            x = fade(x, 'out', len, slope);
+            x = fade(x, 'in', len, slope, shape);
+            x = fade(x, 'out', len, slope, shape);
         otherwise
             error('Error using fade(): direction can be ''in'', ''out'' or ''inout''');
     end
+    
+end
 
+function e = am(a,len,slope,shape)
+    e = (linspace(a,1-a,len).').^slope;
+    if strcmpi(shape,'cos')
+        e = (1 + cos((1-e)*pi)) / 2;
+    end
 end
 
 % ------------------------------------------------------------------------

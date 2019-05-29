@@ -29,9 +29,9 @@ function [ Y ] = mcrop( X, r, c, s )
                     Y(R,C) = X(Xr,Xc);
                 else
                     Y(R,C) = 0;
-                end;
-            end;
-        end;
-    end;
+                end
+            end
+        end
+    end
 
 end
