@@ -12,7 +12,7 @@ function [ y, wm, dwm, mu ] = whitening( x )
 
     epsilon = 1e-7;
     
-    if nargout > 4
+    if nargout > 3
         mu = mean(x);
         x = x-mu;
     end
