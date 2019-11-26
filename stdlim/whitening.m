@@ -32,7 +32,7 @@ function [ y, wm, dwm, mu ] = whitening( x, defaultnan )
             dwm = eye(size(cm, 1));
         end
     else
-        wm = ((eye(size(cm, 1)) .* (diag(D).^(-0.5))) * E.';
+        wm = (eye(size(cm, 1)) .* (diag(D).^(-0.5))) * E.';
         dwm = E * sqrt (D);
         y   = (wm * x.').';
         if ~isreal(y)
