@@ -1,14 +1,21 @@
-function [ y, wm, dwm ] = whitening( x )
+function [ y, wm, dwm, mu ] = whitening( x )
 % WHITENING whitens a multivariate signal
 %
 %[ x, wm, dwm ] = WHITENING( x )
+%[ x, wm, dwm, mu ] = WHITENING( x )
 %
 %   Columns of x are vriables, while rows are observations
+%   Mean is removed only if fourth output is asked.
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
 % See also COV, EIG
 
     epsilon = 1e-7;
+    
+    if nargout > 4
+        mu = mean(x);
+        x = x-mu;
+    end
 
     cm  = cov(x, 1);
     [E, D] = eig (cm);
