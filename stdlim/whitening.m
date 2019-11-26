@@ -4,7 +4,7 @@ function [ y, wm, dwm, mu ] = whitening( x )
 %[ x, wm, dwm ] = WHITENING( x )
 %[ x, wm, dwm, mu ] = WHITENING( x )
 %
-%   Columns of x are vriables, while rows are observations
+%   Columns of x are variables, while rows are observations
 %   Mean is removed only if fourth output is asked.
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
