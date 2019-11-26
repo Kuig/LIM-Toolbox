@@ -1,18 +1,20 @@
-function [ y, wm, dwm, mu ] = whitening( x )
+function [ y, wm, dwm, mu ] = whitening( x, defaultnan )
 % WHITENING whitens a multivariate signal
 %
 %[ x, wm, dwm ] = WHITENING( x )
 %[ x, wm, dwm, mu ] = WHITENING( x )
+%_ = WHITENING( x, defaultnan )
 %
-%   Columns of x are vriables, while rows are observations
+%   Columns of x are variables, while rows are observations
 %   Mean is removed only if fourth output is asked.
+%	If defaultnan is not specified or true, default transformations are NaN, otherwise they are identity transformations
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
 % See also COV, EIG
 
     epsilon = 1e-7;
     
-    if nargout > 4
+    if nargout > 3
         mu = mean(x);
         x = x-mu;
     end
@@ -22,10 +24,15 @@ function [ y, wm, dwm, mu ] = whitening( x )
     
     if all(diag (D) < epsilon)
         y = x;
-        wm = NaN;
-        dwm = NaN;
+        if nargin < 2 || defaultnan
+            wm = NaN;
+            dwm = NaN;
+        else
+            wm = eye(size(cm, 1));
+            dwm = eye(size(cm, 1));
+        end
     else
-        wm  = (sqrt (D)) \ E.';
+        wm = ((eye(size(cm, 1)) .* (diag(D).^(-0.5))) * E.';
         dwm = E * sqrt (D);
         y   = (wm * x.').';
         if ~isreal(y)
