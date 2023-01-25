@@ -12,7 +12,7 @@ function [ output ] = overlap ( frames, frameHop, len, window )
 %   len:      final output length (enforced by truncation)
 %   window:   windowing function applied to each frame (if any)
 %
-%   OVERLAP is thught to be used on the output of BUFFER function,
+%   OVERLAP is thought to be used on the output of BUFFER function,
 %   nevertheless, if BUFFER is called without initial delay or if getSTFT
 %   is replaced with SPECTROGRAM, OVERLAP function will not work properly
 %

@@ -1,5 +1,5 @@
-% The Bivariate Mixture Space: a novel method for
-% representing bivariate mixtures.
+% The Bivariate Mixture Space: 
+% A Compact Spectral Representation of Bivariate Signals
 %
 % G. Presti - Laboratorio di Informatica Musicale
 % Universita' degli studi di milano - Milano (IT)

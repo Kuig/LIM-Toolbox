@@ -14,9 +14,9 @@ function [X1,X2] = iBS(X,R)
     X1 = X .* cos(R);
     X2 = X .* sin(R);
     
-% Given the aboe model, the correct way to compute X and R should be:
-%   X = sqrt(X1.^2 + x2.^2);
-%   R = 2 * atan2( sqrt(X1.^2 + x2.^2)-X1 , X2 );
+% Given the above model, the correct way to compute X and R should be:
+%   X = sqrt(X1.^2 + X2.^2);
+%   R = 2 * atan2( sqrt(X1.^2 + X2.^2)-X1 , X2 );
 % But atan2 works only with real inputs, and X2 must be ~= 0.
 % By using R computed as
 %   R = abs(s) * exp(i(angle(X1)-angle(X2)));
