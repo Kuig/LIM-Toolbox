@@ -2,15 +2,15 @@
 % A Compact Spectral Representation of Bivariate Signals
 %
 % G. Presti - Laboratorio di Informatica Musicale
-% Universita' degli studi di milano - Milano (IT)
+% Universita' degli Studi di Milano - Milano (IT)
 %
-% This script should reproduce the experimental results of [publication]
+% This script will reproduce the experimental results of [publication]
 % The datased used in the publication is available at:
 %
 %   https://www.upf.edu/web/mtg/mass
 %
 % To use it, all mixtures in the dataset should be discarted, and all
-% remaining wav files has to be collected in one folder. In absence of
+% remaining wav files have to be collected in one folder. In absence of
 % the dataset, random data will be generated, but results may differ from
 % the reoprted ones.
 
@@ -33,9 +33,9 @@ if missingStuff(), error('Some packages are missing, download and/or add them to
 % Initialize the environment
 wbar = waitbar(0,'Initializing...');
 rng(42);                      % For reprocucibility
-timing    = zeros(nOfTest,2); % Time needed to execute each test
-results   = cell(nOfTest,2);  % Results of each test
-scores    = zeros(nOfTest,2); % Errors of each test
+timing    = zeros(nOfTest,3); % Time needed to execute each test
+results   = cell(nOfTest,3);  % Results of each test
+scores    = zeros(nOfTest,3); % Errors of each test
 A         = cell(nOfTest,1);  % Filenames of source 1 of each tests
 B         = cell(nOfTest,1);  % Filenames of source 2 of each tests
 skipThres = db2amp(skipThres);% Others small init steps...
@@ -75,9 +75,13 @@ for tst = 1:nOfTest
     waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (SOBI)...',tst,nOfTest));
     [scores(tst,1), timing(tst,1), results{tst,1}] = test_sobi(y, mixMatrix);
     
+    % Test FastICA
+    waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (FastICA)...',tst,nOfTest));
+    [scores(tst,2), timing(tst,2), results{tst,2}] = test_ica(y, mixMatrix);
+
     % Test ICA by BMS
     waitbar(tst/nOfTest,wbar,sprintf('Executing test %d/%d (BMS)...',tst,nOfTest));
-    [scores(tst,2), timing(tst,2), results{tst,2}] = test_bms(y, mixMatrix, sets);
+    [scores(tst,3), timing(tst,3), results{tst,3}] = test_bms(y, mixMatrix, sets);
 
     % Plot data if asked
     if plotDetails

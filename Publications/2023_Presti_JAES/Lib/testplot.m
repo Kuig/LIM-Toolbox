@@ -1,7 +1,7 @@
 function [] = testplot(results,tst,y,angles)
     clf
     ia = [results{tst,1}];
-    ba = [results{tst,2}];
+    ba = [results{tst,3}];
     bb = linspace(-1,1,512);
     [pic, picx, picy] = histcounts2(y(:,1),y(:,2),bb,bb);
     imagesc(picx,picy,pic.'.^0.5), hold on

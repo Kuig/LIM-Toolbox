@@ -3,12 +3,18 @@ function stats(scores, timing, nOfTest)
 
     clc
 
+    statsPair([scores(:,1),scores(:,3)], [timing(:,1),timing(:,3)], nOfTest, 'SOBI');
+    statsPair([scores(:,2),scores(:,3)], [timing(:,2),timing(:,3)], nOfTest, 'FastICA');
+
+end
+
+function statsPair(scores, timing, nOfTest, icaAlg)
     scorediff = diff(scores,1,2);
     smean = mean(scorediff,'omitnan');
     ssd = std(scorediff,'omitnan');
     switch sign(smean)
         case -1
-            winner = '(SOBI seems better)';
+            winner = ['(',icaAlg,' seems better)'];
         case +1
             winner = '(BMS seems better)';
         otherwise
@@ -29,7 +35,7 @@ function stats(scores, timing, nOfTest)
 
     empt = diff(timing,1,2)>0;
 
-    fprintf('\nSOBI empirically faster %d times (%.2f%%)\n',sum(empt),100*sum(empt)/nOfTest);
+    fprintf(['\n',icaAlg,' empirically faster %d times (%.2f%%)\n'],sum(empt),100*sum(empt)/nOfTest);
     
     % Mann–Whitney U test
     Tdiff = diff(timing,1,2);
@@ -38,7 +44,7 @@ function stats(scores, timing, nOfTest)
         case -1
             winner = '(BMS seems faster)';
         case +1
-            winner = '(SOBI seems faster)';
+            winner = ['(',icaAlg,' seems faster)'];
         otherwise
             winner = '';
     end
