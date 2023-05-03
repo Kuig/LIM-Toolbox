@@ -17,7 +17,7 @@ function [ f2x, x2f, fe ] = getFreqConverters( tgt, F )
             f2x = @hz2mel; x2f = @mel2hz;
         case {'bark','barks'}
             f2x = @hz2bark; x2f = @bark2hz;
-        case {'st','semitone','semitones'}
+        case {'st','semitone','semitones','nn'}
             f2x = @hz2st; x2f = @st2hz;
             if F(1) <= 0, fe = 2; end
         case {'erb', 'erbs'}

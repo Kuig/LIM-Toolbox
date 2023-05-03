@@ -13,7 +13,7 @@ function [ Y, N ] = rescalefreq( X, F, fscale, imode, reso )
 %   N: new frequency axis expressed in fscale
 %
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
-% See also GETTD, GETFD, GETFBANK, GETFREQCONVERTERS, RESCALEAMP, INTERP1
+% See also GETTD, GETFD, GETFILTERBANK, GETFREQCONVERTERS, RESCALEAMP, INTERP1
 
     if nargin < 3, fscale = 'mel'; end
     if nargin < 4, imode = 'fb'; end
@@ -21,6 +21,7 @@ function [ Y, N ] = rescalefreq( X, F, fscale, imode, reso )
     
     switch lower(imode)
         case {'filterbank','fbank','fb'}
+            % [fb, N] = getfilterbank(F,fscale,reso,[],'tri');
             [fb, N] = getfbank(F,'auto',fscale,@triang,reso);
             if ismatrix(X)
                 Y = fb * X;

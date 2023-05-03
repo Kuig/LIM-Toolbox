@@ -40,10 +40,10 @@ function [ fbank, bcen ] = getfilterbank( F, scale, nb, bw, wType, trans )
 %(C)2022 G.Presti (LIM) - GPL license at the end of file
 % See also GETFD, GETTD, RESCALEFREQ, GETFREQCONVERTERS
 
-    if nargin == 0, F = 0:80:20479; end
+    if nargin == 0, F = linspace(0, 22050, 1024); end
 
     %   scale: 'mel', 'bark', 'erbs', 'semitone', 'hz', 'log' 
-    if nargin < 2, scale = 'hz'; end
+    if nargin < 2, scale = 'mel'; end
     if nargin < 3, nb = []; end
     if nargin < 4, bw = []; end
     if nargin < 5, wType = 'tri'; end
@@ -75,13 +75,13 @@ function [ fbank, bcen ] = getfilterbank( F, scale, nb, bw, wType, trans )
 
     bcen = low + ((1:nb) * bhop);
 
-    infr = x2f(bcen-bw);
-    supr = x2f(bcen+bw);
-    bcen = x2f(bcen);
+    infrhz = x2f(bcen-bw);
+    suprhz = x2f(bcen+bw);
+    bcenhz = x2f(bcen);
 
     if olap
-        infr(1) = F(1);
-        supr(end) = F(end);
+        infrhz(1) = F(1);
+        suprhz(end) = F(end);
     end
 
     n = length(F);
@@ -100,12 +100,18 @@ function [ fbank, bcen ] = getfilterbank( F, scale, nb, bw, wType, trans )
     m = 1/max(eps,trans);
 
     for b=1:nb 
-        xw = [infr(b),bcen(b),supr(b)];
+        xw = [infrhz(b),bcenhz(b),suprhz(b)];
         yw = [olap && b==1, 1, olap && b==nb];
-        il=findx(F, infr(b));
-        ih=findx(F, supr(b));
-        fbank(b,il:ih) = interp1(xw,yw,F(il:ih),'linear',0);
-        
+        il=findx(F, infrhz(b));
+        ih=findx(F, suprhz(b));
+        fintv = F(il:ih);
+
+        if (ih-il > 1)
+            fbank(b,il:ih) = interp1(xw,yw,fintv,'linear',0);
+        else
+            fbank(b,il:ih) = 1;
+        end
+
         if trans ~= 1
             fbank(b,il:ih) = max(0,min(1, (fbank(b,il:ih)-0.5) * m + 0.5 ));
         end
@@ -113,12 +119,10 @@ function [ fbank, bcen ] = getfilterbank( F, scale, nb, bw, wType, trans )
         fbank(b,il:ih) = wfun(fbank(b,il:ih));
     end
 
-    plot(F, fbank.','.')
-    xlim(F([1,end]));
-    ylim([0,1.2]);
-    grid on
+%     plot(F, fbank)
+%     plot(1:nb, sum(fbank,2));
+%     ylim([0,2]);
 
-    hold on, plot(F, sum(fbank)), hold off;
 end
 
 %% -------------------------------------

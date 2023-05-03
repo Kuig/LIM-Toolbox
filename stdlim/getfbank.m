@@ -32,7 +32,7 @@ function [ fbank, cent ] = getfbank( F, bw, scale, wfunc, nb )
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
 % See also GETFD, GETTD, RESCALEFREQ, GETFREQCONVERTERS
 
-    warning('GETFBANK() is deprecated, use GETFILTERBANK() instead.')
+    % warning('GETFBANK() is deprecated, use GETFILTERBANK() instead.')
 
     if nargin < 2, bw = 'auto'; end
     if nargin < 3, scale = 'mel'; end
