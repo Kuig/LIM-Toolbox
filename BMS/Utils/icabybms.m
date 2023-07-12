@@ -29,7 +29,10 @@ function [ ica, W, A, ma, Dp, a ] = icabybms( x, varargin )
 %   8. Compute mixing and unmixing matrix from the angles found
 %   9. Unmix the signal
 %
-%   Reference: TBA
+%   Reference: Presti, G. "The Bivariate Mixture Space: A Compact Spectral
+%              Representation of Bivariate Signals", JAES Volume 71
+%              Issue 7/8 pp. 481-491; July 2023
+%              doi:10.17743/jaes.2022.0090
 %
 %(C)2018 G.Presti (LIM) - GPL license at the end of file
 % See also WHITENING

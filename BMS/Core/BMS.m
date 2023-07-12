@@ -24,9 +24,10 @@ function [ X ] = BMS( X1, X2, alpha )
 %   corresponding positions and X will have size(alpha,3) pages
 %  ('volume' mode)
 %
-%   Reference: Presti, G. "Signal transformations for improving information
-%              representation, feature extraction and source separation."
-%              PhD Thesis (2017).
+%   Reference: Presti, G. "The Bivariate Mixture Space: A Compact Spectral
+%              Representation of Bivariate Signals", JAES Volume 71
+%              Issue 7/8 pp. 481-491; July 2023
+%              doi:10.17743/jaes.2022.0090
 %
 %(C)2009 G.Presti (LIM) - GPL license at the end of file
 % See also BS, CCORR, SANGLE, PSC

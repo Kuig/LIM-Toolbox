@@ -23,9 +23,10 @@ function [ IMG, F ] = plotBS( M, s, C, F, T, varargin )
 %   IMG: RGB image
 %   F:   New frequency axis (according to fscale)
 %
-%   Reference: Presti, G. "Signal transformations for improving information
-%              representation, feature extraction and source separation."
-%              PhD Thesis (2017).
+%   Reference: Presti, G. "The Bivariate Mixture Space: A Compact Spectral
+%              Representation of Bivariate Signals", JAES Volume 71
+%              Issue 7/8 pp. 481-491; July 2023
+%              doi:10.17743/jaes.2022.0090
 %
 %              Presti, Giorgio, Goffredo Haus, and Davide Andrea Mauro.
 %              "Visualization and manipulation of stereophonic audio

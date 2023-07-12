@@ -9,9 +9,10 @@ function [ X, Y ] = PSC( X1, X2 )
 %
 %   Y: Orthogonal componenst (residuals) of X
 %
-%   Reference: Presti, G. "Signal transformations for improving information
-%              representation, feature extraction and source separation."
-%              PhD Thesis (2017).
+%   Reference: Presti, G. "The Bivariate Mixture Space: A Compact Spectral
+%              Representation of Bivariate Signals", JAES Volume 71
+%              Issue 7/8 pp. 481-491; July 2023
+%              doi:10.17743/jaes.2022.0090
 %
 %(C)2014 G.Presti (LIM) - GPL license at the end of file
 % See also BS, BMS, CCORR, SANGLE
