@@ -27,7 +27,7 @@ It has been tested on MATLAB R2015a + DSP Toolbox, but it should work even with 
 
 ## How to reference this work
 
-Well, by now the only publications available are the following:
+Well, so far the only publications available are the following:
 
 > The Bivariate Mixture Space: A Compact Spectral Representation of Bivariate Signals / G. Presti - J. Audio Eng. Soc., vol. 71, no. 7/8, pp. 481–491, (2023 July/August) - DOI: https://doi.org/10.17743/jaes.2022.0090
 
