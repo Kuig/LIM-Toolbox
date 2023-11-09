@@ -11,41 +11,46 @@
 %
 % ------------------------------------------------------------------------
 
-% For reproducibility
-rng(10);
+%   typ: Type of filter, can be one of the following:
+%        'BP1' - Band-pass (unity gain at cf)
+%        'BP2' - Band-pass (resonant)
+%        'LP'  - Resonant Low-pass
+%        'HP'  - Resonant High-pass
+%        'NC'  - Notch (band-reject)
+%        'AP'  - All-pass
+%        'PK'  - Peak (bell)
+%        'LS1' - Low-shelf (no slope control)
+%        'HS1' - High-shelf (no slope control)
+%        'LS2' - Low-shelf (resonant, with slope control)
+%        'HS2' - High-shelf (resonant, with slope control)
 
-% Generate sample audio
-sampleRate = 44100; % Hz
-duration   = 5;     % Seconds
-x = getSampleAudio(5, sampleRate);
+% Choose filter parameters
+typ = 'PK';
+sr = 44100;
+cf = 1000;
+Q = 1 / sqrt(2);
+GdB = 6;
 
-% Half second fade in and out
-x = fade(x, 'inout', 0.5 * sampleRate);
+% Get filter coefficients
+[b, a] = getBiquadCoeff(typ, sr, cf, Q, GdB);
 
-% Delay left channel by 0.25 seconds
-x(:,1) = circshift(x(:,1),[0.25 * sampleRate,0]);
+% (filter your data with Matlab FILTER function)
 
-% Automatically re-align channels
-[y, lag] = alignvector(x);
-disp(['The left channel has been shifted by ',num2str(lag/sampleRate),' seconds.'])
+% Get filter magnitude response for visualization purpose
+f = logspace(log10(20),log10(20000),256);
+[~,rdB] = getMagnitudeResp(b, a, f, sr);
 
-% ------------------------------------------------------------------------
-
-% Compute time axis for plotting
-len = duration * sampleRate;
-t = linspace(0, len-1, len) ./ sampleRate;
-
-% Plot delayed signals
-subplot(2,1,1)
-plot(t,x)
-grid on
-title('Before alignment');
-
-% Plot aligned signals
-subplot(2,1,2)
-plot(t,y)
-grid on
-title('After alignment');
+% Plot filter response
+semilogx(f,rdB); hold on;
+semilogx(cf,GdB,'or'); hold off;
+ylim([-24,24]);
+xlim([f(1),f(end)]);
+title({'Filter response',...
+    sprintf('Type: %s, Frequency: %.1f Hz, Q: %.3f, Gain: %.1f dB',...
+    typ,cf,Q,GdB)})
+xlabel('Frequency (Hz)');
+ylabel('Gain (dB)');
+grid on;
 
 % ------------------------------------------------------------------------
 %

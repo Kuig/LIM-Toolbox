@@ -8,7 +8,7 @@
 % Via Celoria, 18 - 20133 Milano (Italy)
 % 
 % GPL license at the end of file
-
+%
 % ------------------------------------------------------------------------
 
 % For reproducibility
@@ -63,7 +63,7 @@ title('Output sound');
 
 % ------------------------------------------------------------------------
 %
-% examples.m: Examples on hot to use the stdlim library
+% examples.m: Examples on how to use the stdlim library
 % Copyright (C) 2023 - Laboratorio di Informatica Musicale
 % 
 % This program is free software: you can redistribute it and/or modify
