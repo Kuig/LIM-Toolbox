@@ -11,7 +11,9 @@ It has been tested on MATLAB R2015a + DSP Toolbox, but it should work even with 
 
 ### stdlim
 
-`stdlim` contains common audio processing functions.
+`stdlim` folder contains common audio processing functions.
+
+`Biquad` folder contains biquad filter design functions.
 
 ### BMS
 
