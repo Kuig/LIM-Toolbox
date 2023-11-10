@@ -13,8 +13,6 @@ It has been tested on MATLAB R2015a + DSP Toolbox, but it should work even with 
 
 `stdlim` folder contains common audio processing functions.
 
-`Biquad` folder contains biquad filter design functions.
-
 ### BMS
 
 `BMS` folder contains Bivariate Mixture Space functions and examples.
